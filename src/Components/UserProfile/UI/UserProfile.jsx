@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-const DashBoard = () => {
+const UserProfle = () => {
   // following state to manage user input
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -44,37 +44,43 @@ const DashBoard = () => {
       </div>
 
       <div className=" mt-7 p-7 w-full md:w-[60rem]  text-black m-auto">
-        <div className=" p-2 flex flex-col gap-4">
-          <div className=" flex flex-col gap-2">
-            <label htmlFor="name">Name</label>
+        <div className=" p-2 flex flex-col gap-2">
+          <div className=" flex flex-col ">
+            <label htmlFor="name" className=" text-lg">
+              Name
+            </label>
             <input
               type="text"
               placeholder="Enter Your Name ..."
-              className="p-2  border-black border-2 rounded-md "
+              className="p-2 bg-[#e0e0e0] rounded-md "
               onChange={onNameChangeHandeler}
               value={name}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="name">Mobile Number</label>
+          <div className="flex flex-col">
+            <label htmlFor="name" className=" text-lg">
+              Mobile Number
+            </label>
             <input
               type="number"
               placeholder="Enter Your Number ..."
-              className="p-2  border-black border-2 rounded-md"
+              className="p-2 bg-[#e0e0e0]  rounded-md"
               onChange={onMobileChangeHandeler}
               value={mobileNumber}
             />
           </div>
-          <button
-            className=" py-2 bg-[#1877f2] md:w-[15%] w-full font-semibold text-white rounded-md"
-            onClick={onUserSubmit}
-          >
-            Continue
-          </button>
+          <div className="flex justify-end items-end">
+            <button
+              className=" mt-3 py-2 bg-[#1877f2] md:w-[15%] w-full font-semibold text-white rounded-md"
+              onClick={onUserSubmit}
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default DashBoard;
+export default UserProfle;

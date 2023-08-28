@@ -1,12 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
+import authContext from "../../../Context/AuthContext/authContext";
+import { toast } from "react-toastify";
 const Authentication = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userPwd, setUserPwd] = useState("");
   const navigate = useNavigate();
+  const authCtx = useContext(authContext);
 
   // log in handeler fundtion to change the state for user to login to sign up
   const setIsloggedInHandeler = () => {
@@ -39,7 +42,11 @@ const Authentication = () => {
 
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
-        navigate("/dashboard");
+
+        // also storing the token into context
+        authCtx.setIdToken(data.idToken);
+        toast.success("Account Created ! ");
+        navigate("/userprofile");
       }
 
       // when user log in
@@ -48,10 +55,15 @@ const Authentication = () => {
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
         );
-        navigate("/dashboard");
 
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
+
+        // also storing the token into context
+        authCtx.setIdToken(data.idToken);
+
+        toast.success("User Logged In ! ");
+        navigate("/userprofile");
       }
     } catch (error) {
       console.log(error);

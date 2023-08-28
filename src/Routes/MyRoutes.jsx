@@ -1,12 +1,24 @@
 import { Route, Routes } from "react-router-dom";
-import DashBoardPage from "../Pages/DashBoardPage";
+import UserProfilePage from "../Pages/UserProfilePage";
 import AuthPage from "../Pages/AuthPage";
+import { useContext } from "react";
+import authContext from "../Context/AuthContext/authContext";
 const MyRoutes = () => {
+  const { isUserLoggedIn } = useContext(authContext);
+
   return (
     <Routes>
-      <Route path="/" element={<AuthPage />} />
-      <Route path="/dashboard" element={<DashBoardPage />} />
-      <Route path="*" element={<AuthPage />} />
+      {isUserLoggedIn ? (
+        <>
+          <Route path="/userprofile" element={<UserProfilePage />} />
+          <Route path="*" element={<UserProfilePage />} />
+        </>
+      ) : (
+        <>
+          <Route path="/" element={<AuthPage />} />
+          <Route path="*" element={<AuthPage />} />
+        </>
+      )}
     </Routes>
   );
 };
