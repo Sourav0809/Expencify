@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import HomePage from "../Pages/HomePage";
+import DashBoardPage from "../Pages/DashBoardPage";
 import AuthPage from "../Pages/AuthPage";
 const MyRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<AuthPage />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="*" element={<HomePage />} />
+      <Route path="/dashboard" element={<DashBoardPage />} />
+      <Route path="*" element={<AuthPage />} />
     </Routes>
   );
 };

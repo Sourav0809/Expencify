@@ -32,21 +32,26 @@ const Authentication = () => {
     try {
       // when user create an account
       if (!loggedIn) {
-        const submitedRes = await axios.post(
+        const { data } = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
         );
-        navigate("/home");
+
+        // storing the token after user create an account
+        localStorage.setItem("idToken", data.idToken);
+        navigate("/dashboard");
       }
 
       // when user log in
       if (loggedIn) {
-        const submitedRes = await axios.post(
+        const { data } = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
         );
-        navigate("/home");
-        console.log(submitedRes);
+        navigate("/dashboard");
+
+        // storing the token after user create an account
+        localStorage.setItem("idToken", data.idToken);
       }
     } catch (error) {
       console.log(error);
