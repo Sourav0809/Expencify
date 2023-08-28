@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 const Authentication = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userPwd, setUserPwd] = useState("");
+  const navigate = useNavigate();
 
   // log in handeler fundtion to change the state for user to login to sign up
   const setIsloggedInHandeler = () => {
@@ -34,7 +36,7 @@ const Authentication = () => {
           "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
         );
-        console.log(submitedRes);
+        navigate("/home");
       }
 
       // when user log in
@@ -43,6 +45,7 @@ const Authentication = () => {
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
         );
+        navigate("/home");
         console.log(submitedRes);
       }
     } catch (error) {

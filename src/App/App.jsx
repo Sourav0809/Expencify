@@ -1,8 +1,8 @@
-import AuthPage from "../Pages/AuthPage";
+import MyRoutes from "../Routes/MyRoutes";
 const App = () => {
   return (
     <>
-      <AuthPage />
+      <MyRoutes />
     </>
   );
 };
