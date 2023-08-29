@@ -4,7 +4,7 @@ import App from "./App/App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext/AuthProvider";
-import userInfoProvider from "./Context/UserProfile/userInfoProvider";
+import UserInfoProvider from "./Context/UserProfile/UserInfoProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,9 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ToastContainer />
     <AuthProvider>
-      <userInfoProvider>
+      <UserInfoProvider>
         <App />
-      </userInfoProvider>
+      </UserInfoProvider>
     </AuthProvider>
   </BrowserRouter>
 );

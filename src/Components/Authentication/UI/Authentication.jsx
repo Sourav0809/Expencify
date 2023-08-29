@@ -4,12 +4,15 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import authContext from "../../../Context/AuthContext/authContext";
 import { toast } from "react-toastify";
+import Loader from "../../UI/Loader/Loader";
+
 const Authentication = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userPwd, setUserPwd] = useState("");
   const navigate = useNavigate();
   const authCtx = useContext(authContext);
+  const [loaderScreen, setLoaderScreen] = useState(false);
 
   // log in handeler fundtion to change the state for user to login to sign up
   const setIsloggedInHandeler = () => {
@@ -35,6 +38,7 @@ const Authentication = () => {
     try {
       // when user create an account
       if (!loggedIn) {
+        setLoaderScreen(true);
         const { data } = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
@@ -51,6 +55,7 @@ const Authentication = () => {
 
       // when user log in
       if (loggedIn) {
+        setLoaderScreen(true);
         const { data } = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
           submitedval
@@ -63,12 +68,12 @@ const Authentication = () => {
         authCtx.setIdToken(data.idToken);
 
         toast.success("User Logged In ! ");
-        navigate("/userprofile");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log(error);
     }
-
+    setLoaderScreen(false);
     setUserEmail("");
     setUserPwd("");
   };
@@ -76,7 +81,7 @@ const Authentication = () => {
   return (
     <div className=" font-popins">
       <h1 className=" text-4xl p-6 mt-4 font-semibold ">expencyFi</h1>
-      <div className=" m-auto mt-28 lg:w-[80rem] w-full">
+      <div className=" m-auto  mt-28 lg:w-[70rem] w-full">
         <div className=" p-7 flex flex-col gap-3">
           <div>
             <h1 className=" text-5xl font-bold  ">
@@ -118,7 +123,13 @@ const Authentication = () => {
               className=" py-2 px-10 bg-[#1877f2] font-semibold text-white rounded-md"
               onClick={submitedFormHandeler}
             >
-              {!loggedIn ? "Sign Up" : "Log In"}
+              {!loggedIn
+                ? loaderScreen
+                  ? Loader
+                  : "Sign Up"
+                : loaderScreen
+                ? Loader
+                : "Log In"}
             </button>
           </div>
 

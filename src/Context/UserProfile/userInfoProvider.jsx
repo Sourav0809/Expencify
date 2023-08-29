@@ -1,7 +1,7 @@
 import { useState } from "react";
 import userProfileCtx from "./userProfileCtx";
 
-const userInfoProvider = (props) => {
+const UserInfoProvider = (props) => {
   const [userInfo, setUserInfo] = useState("");
 
   const userInfoSetHandeler = (info) => {
@@ -20,4 +20,4 @@ const userInfoProvider = (props) => {
   );
 };
 
-export default userInfoProvider;
+export default UserInfoProvider;
