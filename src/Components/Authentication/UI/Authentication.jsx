@@ -13,12 +13,16 @@ const Authentication = () => {
   const navigate = useNavigate();
   const authCtx = useContext(authContext);
   const [loaderScreen, setLoaderScreen] = useState(false);
+  const [onForgotPwd, setOnForgotPwd] = useState(false);
 
-  // log in handeler fundtion to change the state for user to login to sign up
+  /* -------------------------------------------------------------------------- */
+  /*                           SWITCH LOGIN OR SIGN UP                          */
+  /* -------------------------------------------------------------------------- */
   const setIsloggedInHandeler = () => {
     setLoggedIn((prev) => {
       return !prev;
     });
+    setOnForgotPwd(false);
   };
 
   const userEmailHandeler = (e) => {
@@ -28,16 +32,22 @@ const Authentication = () => {
     setUserPwd(e.target.value);
   };
 
-  // if user log in or sign up
-  const submitedFormHandeler = async () => {
+  /* -------------------------------------------------------------------------- */
+  /*                           USER LOG IN AND SIGN UP                          */
+  /* -------------------------------------------------------------------------- */
+
+  const submitedFormHandeler = async (e) => {
+    e.preventDefault();
     const submitedval = {
       email: userEmail,
       password: userPwd,
       returnSecureToken: false,
     };
     try {
-      // when user create an account
-      if (!loggedIn) {
+      /* -------------------------------------------------------------------------- */
+      /*                          FOR CREATING NEW ACCOUNT                          */
+      /* -------------------------------------------------------------------------- */
+      if (!loggedIn && !onForgotPwd) {
         setLoaderScreen(true);
         const { data } = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
@@ -54,8 +64,11 @@ const Authentication = () => {
         navigate("/userprofile");
       }
 
-      // when user log in
-      if (loggedIn) {
+      /* -------------------------------------------------------------------------- */
+      /*                                 FOR LOG IN                                 */
+      /* -------------------------------------------------------------------------- */
+
+      if (loggedIn && !onForgotPwd) {
         setLoaderScreen(true);
         const { data } = await axios.post(
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
@@ -71,22 +84,46 @@ const Authentication = () => {
         toast.success("User Logged In ! ");
         navigate("/dashboard");
       }
+
+      /* -------------------------------------------------------------------------- */
+      /*                             FOR FORGOT PASSWORD                            */
+      /* -------------------------------------------------------------------------- */
+
+      if (onForgotPwd) {
+        setLoaderScreen(true);
+        const forgotRes = await axios.post(
+          "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
+          {
+            requestType: "PASSWORD_RESET",
+            email: userEmail,
+          }
+        );
+
+        setLoggedIn(true);
+        setOnForgotPwd(false);
+        toast.success("Reset Link Sent On Your Email!");
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.error.message);
     }
+
     setLoaderScreen(false);
     setUserEmail("");
     setUserPwd("");
   };
 
   return (
-    <div className=" font-popins">
+    <form className=" font-popins" onSubmit={submitedFormHandeler}>
       <h1 className=" text-4xl p-6 mt-4 font-semibold ">expencyFi</h1>
       <div className=" m-auto  mt-28 lg:w-[70rem] w-full">
         <div className=" p-7 flex flex-col gap-3">
           <div>
             <h1 className=" text-5xl font-bold  ">
-              {!loggedIn ? "Create Account" : "Log In"}
+              {!loggedIn
+                ? "Create Account"
+                : onForgotPwd
+                ? "Forgot Password"
+                : "Log In"}
             </h1>
           </div>
 
@@ -105,24 +142,40 @@ const Authentication = () => {
               className=" bg-[#e0e0e0] p-2 rounded-md"
               onChange={userEmailHandeler}
               value={userEmail}
+              required
             />
           </div>
 
-          <div className=" flex flex-col">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              placeholder="Enter Your Password..."
-              className=" bg-[#e0e0e0] p-2 rounded-md"
-              onChange={userPwdHandeler}
-              value={userPwd}
-            />
+          {!onForgotPwd && (
+            <div className=" flex flex-col">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                placeholder="Enter Your Password..."
+                className=" bg-[#e0e0e0] p-2 rounded-md"
+                onChange={userPwdHandeler}
+                value={userPwd}
+                required
+              />
+            </div>
+          )}
+          <div>
+            {loggedIn && (
+              <p
+                className=" text-red-600 text-sm cursor-pointer w-fit"
+                onClick={() => {
+                  setOnForgotPwd(true);
+                }}
+              >
+                {!onForgotPwd && "Forgot Password"}
+              </p>
+            )}
           </div>
 
           <div className=" mt-5">
             <button
+              type="submit"
               className=" py-2 px-10 bg-[#1877f2] font-semibold text-white rounded-md"
-              onClick={submitedFormHandeler}
             >
               {!loggedIn
                 ? loaderScreen
@@ -130,11 +183,15 @@ const Authentication = () => {
                   : "Sign Up"
                 : loaderScreen
                 ? Loader
+                : onForgotPwd
+                ? loaderScreen
+                  ? Loader
+                  : "Send Forgot Password Link"
                 : "Log In"}
             </button>
           </div>
 
-          <div className=" mt-5">
+          <div className=" mt-5 w-fit">
             <h1>{!loggedIn ? "Already have an account?" : "New User?"}</h1>
             <h1
               onClick={setIsloggedInHandeler}
@@ -145,7 +202,7 @@ const Authentication = () => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
