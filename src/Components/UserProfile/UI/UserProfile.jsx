@@ -26,6 +26,7 @@ const UserProfle = () => {
             idToken: data.users[0].localId,
             displayName: data.users[0].displayName,
             mobile: data.users[0].displayName,
+            emailVerified: data.users[0].emailVerified,
           };
           if (data.users[0].displayName) {
             userCtx.setUserInfo(userProfileDetails);
@@ -54,6 +55,7 @@ const UserProfle = () => {
       idToken: idToken,
       displayName: name,
       mobile: mobileNumber,
+      emailVerified: false,
     };
 
     try {
