@@ -7,13 +7,13 @@ const AuthProvider = (props) => {
 
   const setIdTokenHandeler = (idToken) => {
     setIdToken(idToken);
-    setUserLoggedIn(true);
   };
 
   const authProviderValues = {
     isUserLoggedIn: isUserLoggedIn,
     idToken: idToken,
     setIdToken: setIdTokenHandeler,
+    setUserLoggedIn: setUserLoggedIn,
   };
 
   return (

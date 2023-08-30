@@ -49,6 +49,7 @@ const Authentication = () => {
 
         // also storing the token into context
         authCtx.setIdToken(data.idToken);
+        authCtx.setUserLoggedIn(true);
         toast.success("Account Created ! ");
         navigate("/userprofile");
       }
@@ -66,7 +67,7 @@ const Authentication = () => {
 
         // also storing the token into context
         authCtx.setIdToken(data.idToken);
-
+        authCtx.setUserLoggedIn(true);
         toast.success("User Logged In ! ");
         navigate("/dashboard");
       }

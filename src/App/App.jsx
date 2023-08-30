@@ -19,6 +19,7 @@ const App = () => {
           console.log(data);
           // storing the token into context
           authCtx.setIdToken(idToken);
+          authCtx.setUserLoggedIn(true);
         } catch (error) {
           console.log(error);
         }
