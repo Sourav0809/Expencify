@@ -82,7 +82,7 @@ const Authentication = () => {
         authCtx.setIdToken(data.idToken);
         authCtx.setUserLoggedIn(true);
         toast.success("User Logged In ! ");
-        navigate("/dashboard");
+        navigate("/");
       }
 
       /* -------------------------------------------------------------------------- */
@@ -114,7 +114,14 @@ const Authentication = () => {
 
   return (
     <form className=" font-popins" onSubmit={submitedFormHandeler}>
-      <h1 className=" text-4xl p-6 mt-4 font-semibold ">expencyFi</h1>
+      <h1
+        className=" text-4xl p-6 mt-4 font-semibold "
+        onClick={() => {
+          location.reload();
+        }}
+      >
+        expencyFi
+      </h1>
       <div className=" m-auto  mt-28 lg:w-[70rem] w-full">
         <div className=" p-7 flex flex-col gap-3">
           <div>

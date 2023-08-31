@@ -20,7 +20,7 @@ const UserProfle = () => {
             "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
             { idToken: idToken }
           );
-          console.log(data);
+
           // Also need update user Profile if user refresh the page
           const userProfileDetails = {
             idToken: data.users[0].localId,

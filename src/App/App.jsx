@@ -3,8 +3,12 @@ import MyRoutes from "../Routes/MyRoutes";
 import axios from "axios";
 import authContext from "../Context/AuthContext/authContext";
 import PageLoader from "../Components/UI/Loader/PageLoader";
+import userProfileCtx from "../Context/UserProfile/userProfileCtx";
+import SideBar from "../Components/SideBar/SideBar";
+
 const App = () => {
   const authCtx = useContext(authContext);
+  const { userInfo } = useContext(userProfileCtx);
   const [loaderScreen, setLoaderScreen] = useState(true);
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
@@ -16,7 +20,7 @@ const App = () => {
             "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDWx40StKOSrRktR-vSNki9teMtZ9f_Lpo",
             { idToken: idToken }
           );
-          console.log(data);
+
           // storing the token into context
           authCtx.setIdToken(idToken);
           authCtx.setUserLoggedIn(true);
@@ -31,7 +35,27 @@ const App = () => {
     validateUser(idToken);
   }, []);
 
-  return <>{loaderScreen ? PageLoader : <MyRoutes />}</>;
+  return (
+    <>
+      {loaderScreen ? (
+        PageLoader
+      ) : (
+        <>
+          {userInfo ? (
+            <>
+              {}
+              <SideBar />
+              <MyRoutes />
+            </>
+          ) : (
+            <>
+              <MyRoutes />
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
 };
 
 export default App;
