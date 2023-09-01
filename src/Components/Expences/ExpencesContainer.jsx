@@ -1,13 +1,33 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineAddCircle } from "react-icons/md";
 import Expences from "./UI/Expences";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
 import expenceCtx from "../../Context/ExpenceContext/ExpenceCtx";
+import axios from "axios";
 
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
-  const { expenceList } = useContext(expenceCtx);
+  const { expenceList, setExpenceList } = useContext(expenceCtx);
+
+  /* -------------------------------------------------------------------------- */
+  /*                     On page Refresh                                        */
+  /* -------------------------------------------------------------------------- */
+
+  useEffect(() => {
+    const fetchExpences = async () => {
+      try {
+        const { data } = await axios.get(
+          "https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences.json"
+        );
+        setExpenceList(Object.values(data));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchExpences();
+  }, []);
 
   /* -------------------------------------------------------------------------- */
   /*                     Calculating Total Expence & Credit                     */
