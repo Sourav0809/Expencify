@@ -123,7 +123,7 @@ const AddExpenceForm = (props) => {
               <div className=" flex justify-center items-center gap-2">
                 <button
                   type="submit"
-                  className="p-2  bg-red-500 text-black mt-2 rounded-md font-semibold w-1/2"
+                  className="p-2  bg-red-300 text-black mt-2 rounded-md font-semibold w-1/2"
                   onClick={onAddingExpence}
                 >
                   EXPENCE

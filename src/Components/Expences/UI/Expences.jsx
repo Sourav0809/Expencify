@@ -6,9 +6,12 @@ const Expences = (props) => {
         <p className=" text-base pt-[0.3rem]">{props.expenceDay}</p>
       </div>
       <div
+        onClick={() => {
+          props.onClick(props.id);
+        }}
         className={`${
           props.isExpence ? "bg-red-300" : "bg-[#c5f976]"
-        } px-4 py-2 rounded-md`}
+        } px-4 py-2 rounded-md cursor-pointer`}
       >
         <div className=" flex justify-between items-center text-lg font-bold font-popins">
           <h4>
@@ -17,7 +20,7 @@ const Expences = (props) => {
               / {" " + props.catagory}
             </span>
           </h4>
-          <h4>${props.expencePrice}</h4>
+          <h4>&#x20B9;{props.expencePrice}</h4>
         </div>
         <div>
           <h4 className=" text-sm">{props.expenceDate}</h4>

@@ -3,7 +3,11 @@ const expenceCtx = React.createContext(
     {
         expenceList: [],
         setExpenceList: () => { },
-        onAddExpence: () => { }
+        onAddExpence: () => { },
+        onEditExpence: () => { },
+        // clicedkExpenceId: "",
+        // setClickedExpenceId: () => { },
+        editedExpencesVal: "",
 
     }
 )

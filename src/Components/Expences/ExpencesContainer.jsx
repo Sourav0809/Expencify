@@ -5,10 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
 import expenceCtx from "../../Context/ExpenceContext/ExpenceCtx";
 import axios from "axios";
-
+import PageLoader from "../UI/Loader/PageLoader";
+import EditExpenceForm from "./UI/EditExpenceForm";
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
-  const { expenceList, setExpenceList } = useContext(expenceCtx);
+  const [loader, setLoader] = useState(true);
+  const { expenceList, setExpenceList, onEditExpence } = useContext(expenceCtx);
+  const [viewEditExpence, setViewEditExpence] = useState(false);
 
   /* -------------------------------------------------------------------------- */
   /*                     On page Refresh                                        */
@@ -20,14 +23,30 @@ const ExpencesContainer = () => {
         const { data } = await axios.get(
           "https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences.json"
         );
-        setExpenceList(Object.values(data));
+        if (data) {
+          const expenceListArray = Object.keys(data).map((firebaseId) => ({
+            firebaseId,
+            ...data[firebaseId],
+          }));
+
+          setExpenceList(expenceListArray);
+        }
       } catch (error) {
         console.log(error);
       }
+      setLoader(false);
     };
 
     fetchExpences();
   }, []);
+
+  /* -------------------------------------------------------------------------- */
+  /*                               On Expence Edit                              */
+  /* -------------------------------------------------------------------------- */
+  const onExpenceEdit = (id) => {
+    onEditExpence(id);
+    setViewEditExpence(true);
+  };
 
   /* -------------------------------------------------------------------------- */
   /*                     Calculating Total Expence & Credit                     */
@@ -45,10 +64,18 @@ const ExpencesContainer = () => {
 
   return (
     <>
-      {addExpence && (
+      {loader && PageLoader}
+      {addExpence && !loader && !viewEditExpence && (
         <AddExpenceForm
           hideAddExpence={() => {
             setViewAddExpence(false);
+          }}
+        />
+      )}
+      {viewEditExpence && !addExpence && !loader && (
+        <EditExpenceForm
+          hideEditExpence={() => {
+            setViewEditExpence(false);
           }}
         />
       )}
@@ -107,8 +134,10 @@ const ExpencesContainer = () => {
                   catagory={val.catagory}
                   expencePrice={val.expencePrice}
                   key={val.id}
+                  id={val.id}
                   expenceTime={val.expenceTime}
                   isExpence={val.isExpence}
+                  onClick={onExpenceEdit}
                 />
               );
             })}
