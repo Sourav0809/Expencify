@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import authContext from "../../../Context/AuthContext/authContext";
+import { useDispatch } from "react-redux";
+import { authAction } from "../../../store/actions/authAction";
 import { toast } from "react-toastify";
 import Loader from "../../UI/Loader/Loader";
 
@@ -10,11 +11,10 @@ const Authentication = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userPwd, setUserPwd] = useState("");
-  const navigate = useNavigate();
-  const authCtx = useContext(authContext);
   const [loaderScreen, setLoaderScreen] = useState(false);
   const [onForgotPwd, setOnForgotPwd] = useState(false);
-
+  const navigate = useNavigate();
+  const dispacth = useDispatch();
   /* -------------------------------------------------------------------------- */
   /*                           SWITCH LOGIN OR SIGN UP                          */
   /* -------------------------------------------------------------------------- */
@@ -57,10 +57,12 @@ const Authentication = () => {
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
 
-        // also storing the token into context
-        authCtx.setIdToken(data.idToken);
-        authCtx.setUserLoggedIn(true);
+        // storing the token into redux store and set user is logged in / autheticated
+        dispacth(authAction.setIdToken(data.idToken));
+        dispacth(authAction.userAuthenticated());
+
         toast.success("Account Created ! ");
+        // navigate to user profile tab where user update their details
         navigate("/userprofile");
       }
 
@@ -75,12 +77,14 @@ const Authentication = () => {
           submitedval
         );
 
+        console.log(data);
+
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
 
-        // also storing the token into context
-        authCtx.setIdToken(data.idToken);
-        authCtx.setUserLoggedIn(true);
+        // storing the token into redux store and set user is logged in / autheticated
+        dispacth(authAction.setIdToken(data.idToken));
+        dispacth(authAction.userAuthenticated());
         toast.success("User Logged In ! ");
         navigate("/");
       }

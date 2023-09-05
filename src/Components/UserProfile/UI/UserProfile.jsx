@@ -1,15 +1,16 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import userProfileCtx from "../../../Context/UserProfile/userProfileCtx";
 import PageLoader from "../../UI/Loader/PageLoader";
+import { useDispatch } from "react-redux";
+import { userProfileAction } from "../../../store/actions/userProfileAction";
+
 const UserProfle = () => {
-  const userCtx = useContext(userProfileCtx);
   const [loaderScreen, setLoaderScreen] = useState(true);
   // following state to manage user input
-
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
+  const setUserDetails = useDispatch();
 
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
@@ -28,8 +29,10 @@ const UserProfle = () => {
             mobile: data.users[0].displayName,
             emailVerified: data.users[0].emailVerified,
           };
+
+          // storing the user details in the redux store
           if (data.users[0].displayName) {
-            userCtx.setUserInfo(userProfileDetails);
+            setUserDetails(userProfileAction.setUserInfo(userProfileDetails));
           }
         } catch (error) {
           console.log(error);
@@ -65,7 +68,7 @@ const UserProfle = () => {
         submitedData
       );
 
-      userCtx.setUserInfo(submitedData);
+      setUserDetails(userProfileAction.setUserInfo(submitedData));
     } catch (error) {
       console.log(error);
     }

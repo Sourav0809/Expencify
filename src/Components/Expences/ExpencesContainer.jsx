@@ -1,51 +1,38 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineAddCircle } from "react-icons/md";
 import Expences from "./UI/Expences";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
-import expenceCtx from "../../Context/ExpenceContext/ExpenceCtx";
-import axios from "axios";
 import PageLoader from "../UI/Loader/PageLoader";
 import EditExpenceForm from "./UI/EditExpenceForm";
+import { getExpence } from "../../store/actions/expencesAction";
+import { useDispatch, useSelector } from "react-redux";
+import { editExpence } from "../../store/actions/expencesAction";
+
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
-  const [loader, setLoader] = useState(true);
-  const { expenceList, setExpenceList, onEditExpence } = useContext(expenceCtx);
   const [viewEditExpence, setViewEditExpence] = useState(false);
+  const dispatch = useDispatch();
+  const expenceList = useSelector((state) => state.expences.expences);
+  const [loader, setLoader] = useState(true);
 
   /* -------------------------------------------------------------------------- */
   /*                     On page Refresh                                        */
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
-    const fetchExpences = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences.json"
-        );
-        if (data) {
-          const expenceListArray = Object.keys(data).map((firebaseId) => ({
-            firebaseId,
-            ...data[firebaseId],
-          }));
-
-          setExpenceList(expenceListArray);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      setLoader(false);
-    };
-
-    fetchExpences();
+    dispatch(getExpence());
+    setLoader(false);
   }, []);
 
   /* -------------------------------------------------------------------------- */
   /*                               On Expence Edit                              */
   /* -------------------------------------------------------------------------- */
   const onExpenceEdit = (id) => {
-    onEditExpence(id);
-    setViewEditExpence(true);
+    if (id) {
+      setViewEditExpence(true);
+      dispatch(editExpence(id));
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -125,6 +112,11 @@ const ExpencesContainer = () => {
           /*                         ADDED EXPENCES CONTAINER                            */
           /* -------------------------------------------------------------------------- */}
           <div className=" flex flex-col gap-[0.5rem] ">
+            {expenceList.length == 0 && (
+              <h1 className=" text-center mt-16 text-xl">
+                No Expences Added !!
+              </h1>
+            )}
             {expenceList.map((val) => {
               return (
                 <Expences

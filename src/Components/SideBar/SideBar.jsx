@@ -1,21 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillBarChartFill } from "react-icons/bs";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { AiOutlineLogout } from "react-icons/ai";
-import authContext from "../../Context/AuthContext/authContext";
-import userProfileCtx from "../../Context/UserProfile/userProfileCtx";
+import { useDispatch } from "react-redux";
+import { authAction } from "../../store/actions/authAction";
+import { userProfileAction } from "../../store/actions/userProfileAction";
 import { NavLink } from "react-router-dom";
 const SideBar = () => {
-  const authCtx = useContext(authContext);
-  const userCtx = useContext(userProfileCtx);
-
+  const dispatchLogOut = useDispatch();
+  const clearUserInfo = useDispatch();
   const logOutHandeler = () => {
     localStorage.removeItem("idToken");
-    authCtx.setUserLoggedIn(false);
-    authCtx.setIdToken("");
-    userCtx.setUserInfo("");
+    dispatchLogOut(authAction.setIdToken(""));
+    dispatchLogOut(authAction.userLogOut());
+    clearUserInfo(userProfileAction.setUserInfo(""));
   };
 
   return (

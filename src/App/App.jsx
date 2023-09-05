@@ -1,15 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MyRoutes from "../Routes/MyRoutes";
 import axios from "axios";
-import authContext from "../Context/AuthContext/authContext";
 import PageLoader from "../Components/UI/Loader/PageLoader";
-import userProfileCtx from "../Context/UserProfile/userProfileCtx";
 import SideBar from "../Components/SideBar/SideBar";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux";
+import { authAction } from "../store/actions/authAction";
 
 const App = () => {
-  const authCtx = useContext(authContext);
-  const { userInfo } = useContext(userProfileCtx);
+  const { userInfo } = useSelector((state) => state.userProfile);
+  const dispatch = useDispatch();
   const [loaderScreen, setLoaderScreen] = useState(true);
+
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
 
@@ -21,9 +23,9 @@ const App = () => {
             { idToken: idToken }
           );
 
-          // storing the token into context
-          authCtx.setIdToken(idToken);
-          authCtx.setUserLoggedIn(true);
+          // storing the token into redux store
+          dispatch(authAction.userAuthenticated());
+          dispatch(authAction.setIdToken(idToken));
         } catch (error) {
           console.log(error);
         }
@@ -43,7 +45,6 @@ const App = () => {
         <>
           {userInfo ? (
             <>
-              {}
               <SideBar />
               <MyRoutes />
             </>
@@ -59,5 +60,3 @@ const App = () => {
 };
 
 export default App;
-
-// hello just changes something

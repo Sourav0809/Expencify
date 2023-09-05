@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
 import Modal from "../../UI/Modal/Modal";
 import { ImCross } from "react-icons/im";
-import expenceCtx from "../../../Context/ExpenceContext/ExpenceCtx";
+import { setExpence } from "../../../store/actions/expencesAction";
+import { useDispatch } from "react-redux";
+
 const AddExpenceForm = (props) => {
   const [expenceName, setExpenceName] = useState("");
   const [expencePrice, setExpencePrice] = useState("");
   const [expenceDate, setExpenceDate] = useState("");
   const [expenceTime, setExpenceTime] = useState("");
   const [catagory, setCatagory] = useState("Not Selected");
-  const { onAddExpence } = useContext(expenceCtx);
+  const dispatch = useDispatch();
 
   /* -------------------------------------------------------------------------- */
   /*                           On adding a new Expence                          */
@@ -29,7 +31,8 @@ const AddExpenceForm = (props) => {
         }),
         catagory: catagory,
       };
-      onAddExpence(expenceDetails);
+
+      dispatch(setExpence(expenceDetails));
       props.hideAddExpence();
     }
   };
@@ -53,8 +56,7 @@ const AddExpenceForm = (props) => {
         }),
         catagory: catagory,
       };
-      onAddExpence(expenceDetails);
-      console.log(expenceDetails);
+      dispatch(setExpence(expenceDetails));
       props.hideAddExpence();
     }
   };

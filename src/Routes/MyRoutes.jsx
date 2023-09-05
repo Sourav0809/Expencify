@@ -1,19 +1,18 @@
 import { Route, Routes } from "react-router-dom";
+import ExpencePage from "../Pages/ExpencePage";
+import DashBoard from "../Components/DashBoard/UI/DashBoard";
+import ProfileViewPage from "../Pages/ProfileViewPage";
 import UserProfilePage from "../Pages/UserProfilePage";
 import AuthPage from "../Pages/AuthPage";
-import { useContext } from "react";
-import authContext from "../Context/AuthContext/authContext";
-import userProfileCtx from "../Context/UserProfile/userProfileCtx";
-import DashBoard from "../Components/DashBoard/UI/DashBoard";
-import SideBar from "../Components/SideBar/SideBar";
-import ProfileViewPage from "../Pages/ProfileViewPage";
-import ExpencePage from "../Pages/ExpencePage";
+import { useSelector } from "react-redux";
+
 const MyRoutes = () => {
-  const { isUserLoggedIn } = useContext(authContext);
-  const { userInfo } = useContext(userProfileCtx);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.userProfile);
+
   return (
     <Routes>
-      {isUserLoggedIn ? (
+      {isAuthenticated ? (
         <>
           {userInfo ? (
             <>
@@ -24,7 +23,7 @@ const MyRoutes = () => {
             </>
           ) : (
             <>
-              <Route path="/userprofile" element={<UserProfilePage />} />
+              <Route path="/" element={<UserProfilePage />} />
               <Route path="*" element={<UserProfilePage />} />
             </>
           )}
