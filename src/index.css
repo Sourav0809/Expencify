@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.bg-dark {
+    transition-property: background-color;
+    transition-duration: 0.8s;
+    transition-timing-function: ease;
+    background-color: black;
+    color: white;
+}
+
+.bg-normal {
+    transition-property: background-color;
+    transition-duration: 0.8s;
+    transition-timing-function: ease;
+    background-color: white;
+    color: black;
+}

@@ -1,13 +1,13 @@
 import axios from "axios";
-import Button from "../../UI/Button/Button";
-import { AiFillSmile } from "react-icons/ai";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 const ProfileView = () => {
   const userProfile = useSelector((state) => state.userProfile.userInfo);
-
   console.log(userProfile);
+  const [isVip, setIsVip] = useState(false);
+
   const verifyEmailHandeler = async () => {
     const idToken = localStorage.getItem("idToken");
     try {
@@ -35,42 +35,59 @@ const ProfileView = () => {
         <div className=" w-full p-5 flex flex-col gap-2">
           <input
             disabled
-            p-1
-            value={"Sourav Pathak"}
+            value={userProfile.displayName}
             className="w-full p-2 rounded-sm bg-[#9bddc2]"
           />
           <input
             disabled
-            p-1
-            value={"spathak7431@gmail.com"}
+            value={userProfile.email}
             className="w-full p-2 rounded-sm bg-[#9bddc2]"
           />
           <input
             disabled
-            p-1
-            value={"6294543902"}
+            value={userProfile.mobile}
             className="w-full p-2 rounded-sm bg-[#9bddc2]"
           />
           <input
             disabled
-            p-1
-            value={"**********"}
+            value="**********"
             className="w-full p-2 rounded-sm  bg-[#9bddc2]"
           />
           <div className=" flex justify-center item-center gap-2">
-            <button className="mt-3 py-2 bg-[#565be9d0] md:w-[100%] w-full font-semibold text-white rounded-sm">
-              Verify Email
-            </button>
+            {userProfile.emailVerified ? (
+              <button
+                disabled
+                className="mt-3 py-2 bg-[#565be9d0] md:w-[100%] w-full font-semibold text-white rounded-sm"
+              >
+                Verfied User
+              </button>
+            ) : (
+              <button
+                onClick={verifyEmailHandeler}
+                className="mt-3 py-2 bg-[#565be9d0] md:w-[100%] w-full font-semibold text-white rounded-sm"
+              >
+                Verfiy Email
+              </button>
+            )}
           </div>
 
           <div className=" mb-7">
             <h1 className=" text-base font-semibold">
-              Verify your account to use 100% of our app
+              {userProfile.emailVerified
+                ? "Your Account is Verified"
+                : "Verify your account to use 100% of our app"}
             </h1>
-            <button className=" mt-2 font-bold">Unlock VIP</button>
+            {isVip ? (
+              <button className=" mt-2 font-bold bg-[#469170] px-4 py-2 rounded-sm text-white">
+                Download Expences
+              </button>
+            ) : (
+              <button className=" mt-2 font-bold ">Unlock VIP</button>
+            )}
           </div>
         </div>
       </div>
+      s
     </div>
   );
 };

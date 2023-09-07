@@ -8,14 +8,18 @@ import { useDispatch } from "react-redux";
 import { authAction } from "../../store/actions/authAction";
 import { userProfileAction } from "../../store/actions/userProfileAction";
 import { NavLink } from "react-router-dom";
+
 const SideBar = () => {
   const dispatchLogOut = useDispatch();
+  const clearUserEmail = useDispatch();
   const clearUserInfo = useDispatch();
+
   const logOutHandeler = () => {
     localStorage.removeItem("idToken");
     dispatchLogOut(authAction.setIdToken(""));
     dispatchLogOut(authAction.userLogOut());
     clearUserInfo(userProfileAction.setUserInfo(""));
+    clearUserEmail(authAction.setUserEmail(null));
   };
 
   return (
@@ -27,7 +31,9 @@ const SideBar = () => {
         <NavLink to={"/dashboard"}>
           <BsFillBarChartFill className="cursor-pointer" />
         </NavLink>
-        <BiSolidCategoryAlt className="cursor-pointer" />
+        <NavLink to={"/categorys"}>
+          <BiSolidCategoryAlt className="cursor-pointer" />
+        </NavLink>
       </div>
       <div className=" flex flex-col justify-center items-center text-3xl gap-3 text-orange-600 pb-32 md:pb-0   ">
         <NavLink to={"/profile"}>

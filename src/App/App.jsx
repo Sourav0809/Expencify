@@ -5,12 +5,13 @@ import PageLoader from "../Components/UI/Loader/PageLoader";
 import SideBar from "../Components/SideBar/SideBar";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
-import { authAction } from "../store/actions/authAction";
-
+import { authAction, setUserEmail } from "../store/actions/authAction";
+import ToggleButton from "../Components/UI/Button/ToggleButton";
+import { getExpence } from "../store/actions/expencesAction";
 const App = () => {
   const { userInfo } = useSelector((state) => state.userProfile);
-  const dispatch = useDispatch();
   const [loaderScreen, setLoaderScreen] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
@@ -26,10 +27,14 @@ const App = () => {
           // storing the token into redux store
           dispatch(authAction.userAuthenticated());
           dispatch(authAction.setIdToken(idToken));
+          dispatch(setUserEmail(data.users[0].email));
         } catch (error) {
           console.log(error);
         }
       }
+      // fetching user expences
+      dispatch(getExpence());
+
       setLoaderScreen(false);
     };
 
@@ -45,11 +50,13 @@ const App = () => {
         <>
           {userInfo ? (
             <>
+              <ToggleButton />
               <SideBar />
               <MyRoutes />
             </>
           ) : (
             <>
+              <ToggleButton />
               <MyRoutes />
             </>
           )}

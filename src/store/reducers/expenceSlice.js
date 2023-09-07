@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const expenceSlice = createSlice({
     name: "expences",
-    initialState: { expences: [], editedExpences: {} },
+    initialState: { expences: [], editedExpences: {}, loader: false },
     reducers: {
         setExpences(state, action) {
             state.expences = action.payload
@@ -14,7 +14,12 @@ const expenceSlice = createSlice({
         editExpence(state, action) {
             state.editedExpences = action.payload
         },
-
+        setLoaderTrue(state) {
+            state.loader = true
+        },
+        setLoaderFalse(state) {
+            state.loader = false
+        }
     }
 })
 

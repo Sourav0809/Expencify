@@ -47,6 +47,7 @@ const Authentication = () => {
       /* -------------------------------------------------------------------------- */
       /*                          FOR CREATING NEW ACCOUNT                          */
       /* -------------------------------------------------------------------------- */
+
       if (!loggedIn && !onForgotPwd) {
         setLoaderScreen(true);
         const { data } = await axios.post(
@@ -60,7 +61,7 @@ const Authentication = () => {
         // storing the token into redux store and set user is logged in / autheticated
         dispacth(authAction.setIdToken(data.idToken));
         dispacth(authAction.userAuthenticated());
-
+        dispacth(authAction.setUserEmail(data.email));
         toast.success("Account Created ! ");
         // navigate to user profile tab where user update their details
         navigate("/userprofile");
@@ -77,14 +78,13 @@ const Authentication = () => {
           submitedval
         );
 
-        console.log(data);
-
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
 
         // storing the token into redux store and set user is logged in / autheticated
         dispacth(authAction.setIdToken(data.idToken));
         dispacth(authAction.userAuthenticated());
+        dispacth(authAction.setUserEmail(data.email));
         toast.success("User Logged In ! ");
         navigate("/");
       }
@@ -108,6 +108,7 @@ const Authentication = () => {
         toast.success("Reset Link Sent On Your Email!");
       }
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.error.message);
     }
 

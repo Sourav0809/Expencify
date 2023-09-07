@@ -14,16 +14,7 @@ const ExpencesContainer = () => {
   const [viewEditExpence, setViewEditExpence] = useState(false);
   const dispatch = useDispatch();
   const expenceList = useSelector((state) => state.expences.expences);
-  const [loader, setLoader] = useState(true);
-
-  /* -------------------------------------------------------------------------- */
-  /*                     On page Refresh                                        */
-  /* -------------------------------------------------------------------------- */
-
-  useEffect(() => {
-    dispatch(getExpence());
-    setLoader(false);
-  }, []);
+  const { loader } = useSelector((state) => state.expences);
 
   /* -------------------------------------------------------------------------- */
   /*                               On Expence Edit                              */
@@ -98,7 +89,7 @@ const ExpencesContainer = () => {
           {/* -------------------------------------------------------------------------- */
           /*                            TOTAL PRICE CONTAINER                           */
           /* -------------------------------------------------------------------------- */}
-          <div className="   flex justify-between items-center font-semibold font-mono text-2xl p-5">
+          <div className=" flex  justify-between items-center font-semibold font-mono text-2xl p-5">
             <div className=" flex justify-center items-center">
               <h1>TOTAL</h1>
             </div>
@@ -135,7 +126,7 @@ const ExpencesContainer = () => {
             })}
           </div>
 
-          <div className=" absolute bottom-[10vh] right-[10vw]">
+          <div className=" fixed bottom-[10vh] right-[10vw]">
             <MdOutlineAddCircle
               className=" text-5xl text-red-400 cursor-pointer"
               onClick={() => setViewAddExpence(true)}

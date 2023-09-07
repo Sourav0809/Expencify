@@ -7,10 +7,13 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditedExpence } from "../../../store/actions/expencesAction";
 import Loader from "../../UI/Loader/Loader";
+import formatEmail from "../../../Functions/formatEmail";
 
 const EditExpenceForm = (props) => {
   // geting the edited expence values from store
   const { editedExpences, expences } = useSelector((state) => state.expences);
+  const { userEmail } = useSelector((state) => state.auth);
+  console.log(userEmail);
 
   // setting those values as an intial value
   const [expenceName, setExpenceName] = useState(editedExpences.expenceName);
@@ -47,7 +50,9 @@ const EditExpenceForm = (props) => {
         setloaderScreen(true);
 
         const updatedRes = await axios.patch(
-          `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences/${editedExpences.firebaseId}.json`,
+          `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
+            userEmail
+          )}/Expences/${editedExpences.firebaseId}.json`,
           updatedExpence
         );
 
@@ -104,7 +109,9 @@ const EditExpenceForm = (props) => {
       if (expenceName && expenceDate && expencePrice && expenceTime) {
         setloaderScreen(true);
         const updatedRes = await axios.patch(
-          `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences/${editedExpences.firebaseId}.json`,
+          `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
+            userEmail
+          )}/Expences/${editedExpences.firebaseId}.json`,
           updatedExpence
         );
         console.log(updatedRes);
@@ -143,14 +150,23 @@ const EditExpenceForm = (props) => {
     e.preventDefault();
     try {
       const deletedRes = await axios.delete(
-        `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences/${editedExpences.firebaseId}.json`
+        `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
+          userEmail
+        )}/Expences/${editedExpences.firebaseId}.json`
       );
 
       const filterarr = expences.filter((val) => {
         return val.id !== editedExpences.id;
       });
 
-      dispatch(setEditedExpence(filterarr));
+      // for sorting the array
+      const sortedExpence = filterarr.sort((a, b) => {
+        const dateA = new Date(a.expenceDate);
+        const dateB = new Date(b.expenceDate);
+        return dateB - dateA;
+      });
+
+      dispatch(setEditedExpence(sortedExpence));
 
       props.hideEditExpence();
     } catch (error) {

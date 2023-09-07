@@ -1,8 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Modal from "../../UI/Modal/Modal";
+import Option from "./Option";
 import { ImCross } from "react-icons/im";
 import { setExpence } from "../../../store/actions/expencesAction";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 const AddExpenceForm = (props) => {
   const [expenceName, setExpenceName] = useState("");
@@ -11,6 +13,7 @@ const AddExpenceForm = (props) => {
   const [expenceTime, setExpenceTime] = useState("");
   const [catagory, setCatagory] = useState("Not Selected");
   const dispatch = useDispatch();
+  const { categorys } = useSelector((state) => state.categorys);
 
   /* -------------------------------------------------------------------------- */
   /*                           On adding a new Expence                          */
@@ -111,9 +114,11 @@ const AddExpenceForm = (props) => {
                 onChange={(e) => setCatagory(e.target.value)}
               >
                 <option value="Not Selected">Not Selected</option>
-                <option value="Fuel">Fuel</option>
-                <option value="Movie">Movie</option>
-                <option value="Dinner">Dinner</option>
+
+                {categorys.map((val) => {
+                  console.log(val);
+                  return <Option option={val.category} key={val.id} />;
+                })}
               </select>
               <input
                 type="number"
