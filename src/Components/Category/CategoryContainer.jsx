@@ -6,22 +6,29 @@ import PageLoader from "../UI/Loader/PageLoader";
 
 const CategoryContainer = () => {
   const { categorys, loader } = useSelector((state) => state.categorys);
-  console.log(loader);
-  const [category, setCategory] = useState("");
+
+  // for the input
+  const [inputCatagory, setInputCatagory] = useState("");
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // calling the fetch category action if user refresh the page
     dispatch(fetchCatagory());
   }, []);
 
+  // when user submit the category
+
   const submitCategory = () => {
     const submittedCategory = {
-      category: category,
+      category: inputCatagory,
       id: Math.random(),
     };
 
     // storing the catagory in the database
     dispatch(setCatagory(submittedCategory));
+
+    setInputCatagory("");
   };
 
   return (
@@ -39,7 +46,8 @@ const CategoryContainer = () => {
               <input
                 placeholder="Add New Category"
                 className="w-[80%] p-2 focus border border-black"
-                onChange={(e) => setCategory(e.target.value)}
+                value={inputCatagory}
+                onChange={(e) => setInputCatagory(e.target.value)}
               />
               <button
                 className="w-[18%] bg-blue-400 px-4 py-1 rounded-md text-white font-semibold"

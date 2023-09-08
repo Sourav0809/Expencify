@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 const ProfileView = () => {
   const userProfile = useSelector((state) => state.userProfile.userInfo);
-  console.log(userProfile);
   const [isVip, setIsVip] = useState(false);
 
   const verifyEmailHandeler = async () => {
@@ -87,7 +86,6 @@ const ProfileView = () => {
           </div>
         </div>
       </div>
-      s
     </div>
   );
 };

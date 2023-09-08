@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 const DashBoard = () => {
   const { expences } = useSelector((state) => state.expences);
-  console.log(expences);
+
   // Separate expenses into two arrays based on 'isExpence' property
   const isExpenceArray = [];
   const isNotExpenceArray = [];
@@ -26,9 +26,6 @@ const DashBoard = () => {
     }
   });
 
-  // console.log("Is Expence Array:", isExpenceArray);
-  // console.log("Is Not Expence Array:", isNotExpenceArray);
-
   const expencePriceArr = [];
   const expenceDateArr = [];
   const creditPriceArr = [];
@@ -47,6 +44,7 @@ const DashBoard = () => {
   /* -------------------------------------------------------------------------- */
   /*                         For visulaize the Expences                         */
   /* -------------------------------------------------------------------------- */
+
   const userExpence = {
     labels: expenceDateArr,
     datasets: [
@@ -74,7 +72,6 @@ const DashBoard = () => {
       },
     ],
   };
-  console.log(userCredit);
 
   return (
     <div className=" mt-5 flex flex-col gap-5">
