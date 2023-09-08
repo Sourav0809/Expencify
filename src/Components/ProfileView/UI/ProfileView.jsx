@@ -1,15 +1,25 @@
 import axios from "axios";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setVip, fetchVip } from "../../../store/actions//vipUserAction";
+import { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 
 const ProfileView = () => {
   const userProfile = useSelector((state) => state.userProfile.userInfo);
   const userExpences = useSelector((state) => state.expences.expences);
-  console.log(userExpences);
-  const [isVip, setIsVip] = useState(true);
+  const { expences } = useSelector((state) => state.expences);
+  const dispatch = useDispatch();
+  const { isVip } = useSelector((state) => state.vipUser);
+  console.log(isVip);
+  // console.log(userExpences);
+
+  // if the user refrest the page
+
+  useEffect(() => {
+    dispatch(fetchVip());
+  }, []);
 
   const verifyEmailHandeler = async () => {
     const idToken = localStorage.getItem("idToken");
@@ -21,6 +31,21 @@ const ProfileView = () => {
       toast.success("Verfication Link Sent !");
     } catch (error) {
       toast.error(error.response.data.error.message);
+    }
+  };
+
+  // seting the user to vip
+  const setUserToVip = () => {
+    let totalexpence = 0;
+
+    expences.forEach((val) => {
+      totalexpence += Number(val.expencePrice);
+    });
+
+    if (totalexpence >= 10000) {
+      dispatch(setVip());
+    } else {
+      alert("Your Total Expence and Credit Must be 10000 or Above");
     }
   };
 
@@ -97,7 +122,9 @@ const ProfileView = () => {
                 </CSVLink>
               </div>
             ) : (
-              <button className=" mt-2 font-bold ">Unlock VIP</button>
+              <button className=" mt-2 font-bold " onClick={setUserToVip}>
+                Unlock VIP
+              </button>
             )}
           </div>
         </div>
