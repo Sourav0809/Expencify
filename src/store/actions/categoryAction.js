@@ -4,6 +4,7 @@ import axios from "axios";
 export const setCatagory = (newCategory) => {
     return async (dispatch, getState) => {
 
+
         const userEmail = getState().auth.userEmail
 
 
@@ -28,6 +29,9 @@ export const setCatagory = (newCategory) => {
 export const fetchCatagory = () => {
     return async (dispatch, getState) => {
         const userEmail = getState().auth.userEmail
+
+        //making the loader true
+        dispatch(categorySlice.actions.setLoaderTrue())
         try {
             if (userEmail) {
                 const { data } = await axios.get(`https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(userEmail)}/categorys/.json`)
@@ -43,6 +47,8 @@ export const fetchCatagory = () => {
         } catch (error) {
             console.log(error);
         }
+        // making the loader false
+        dispatch(categorySlice.actions.setLoaderFalse())
     }
 }
 
