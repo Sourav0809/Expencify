@@ -18,3 +18,10 @@
     background-color: white;
     color: black;
 }
+
+
+.active {
+    background-color: rgb(115, 206, 115);
+    border-radius: .2rem;
+    padding: .1rem;
+}

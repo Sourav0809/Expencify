@@ -14,7 +14,7 @@ const SideBar = () => {
   const clearUserEmail = useDispatch();
   const clearUserInfo = useDispatch();
 
-  const logOutHandeler = () => {
+  const logOutHandler = () => {
     localStorage.removeItem("idToken");
     dispatchLogOut(authAction.setIdToken(""));
     dispatchLogOut(authAction.userLogOut());
@@ -23,23 +23,23 @@ const SideBar = () => {
   };
 
   return (
-    <div className=" bg-white fixed flex flex-col justify-between items-center shadow-lg py-10 top-0 left-0  w-14 h-screen">
-      <div className=" flex flex-col justify-center items-center text-3xl gap-8 md:gap-5 text-orange-600 ">
-        <NavLink to={"/"}>
-          <AiFillHome className="cursor-pointer" />
+    <div className="fixed flex flex-col justify-between items-center shadow-lg py-10 top-0 left-0 w-14 h-screen">
+      <div className="flex flex-col justify-center items-center text-3xl gap-8 md:gap-5 text-orange-600">
+        <NavLink to={"/"} className="cursor-pointer">
+          <AiFillHome />
         </NavLink>
-        <NavLink to={"/dashboard"}>
-          <BsFillBarChartFill className="cursor-pointer" />
+        <NavLink to={"/dashboard"} className="cursor-pointer">
+          <BsFillBarChartFill />
         </NavLink>
-        <NavLink to={"/categorys"}>
-          <BiSolidCategoryAlt className="cursor-pointer" />
+        <NavLink to={"/categorys"} className="cursor-pointer">
+          <BiSolidCategoryAlt />
         </NavLink>
       </div>
-      <div className=" flex flex-col justify-center items-center text-3xl gap-3 text-orange-600 pb-32 md:pb-0   ">
-        <NavLink to={"/profile"}>
-          <BiSolidUserCircle className="cursor-pointer" />
+      <div className="flex flex-col justify-center items-center text-3xl gap-3 text-orange-600 pb-32 md:pb-0">
+        <NavLink to={"/profile"} className={`cursor-pointer `}>
+          <BiSolidUserCircle />
         </NavLink>
-        <AiOutlineLogout onClick={logOutHandeler} className="cursor-pointer" />
+        <AiOutlineLogout onClick={logOutHandler} className="cursor-pointer" />
       </div>
     </div>
   );

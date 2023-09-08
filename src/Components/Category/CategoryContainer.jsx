@@ -36,7 +36,7 @@ const CategoryContainer = () => {
       {loader ? (
         PageLoader
       ) : (
-        <div className=" md:w-[50rem] w-full m-auto p-5">
+        <div className=" md:w-[50rem] w-full m-auto pl-[3.5rem]">
           <div className=" flex flex-col gap-4 justify-center p-10 font-popin">
             <h1 className="text-4xl s font-bold text-blue-950 h-3">
               Categories
@@ -45,12 +45,12 @@ const CategoryContainer = () => {
             <div className="flex w-full gap-1 mt-7 pt-2">
               <input
                 placeholder="Add New Category"
-                className="w-[80%] p-2 focus border border-black"
+                className="w-[70%] p-2  border border-black"
                 value={inputCatagory}
                 onChange={(e) => setInputCatagory(e.target.value)}
               />
               <button
-                className="w-[18%] bg-blue-400 px-4 py-1 rounded-md text-white font-semibold"
+                className="w-[30%] bg-blue-400 px-4 py-1 rounded-md text-white font-semibold"
                 onClick={submitCategory}
               >
                 Add Now

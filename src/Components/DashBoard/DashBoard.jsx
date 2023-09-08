@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 const DashBoard = () => {
   const { expences } = useSelector((state) => state.expences);
@@ -74,12 +74,14 @@ const DashBoard = () => {
   };
 
   return (
-    <div className=" mt-5 flex flex-col gap-5">
-      <div className="md:w-[60rem] w-full h-[25rem] m-auto pl-[3.8rem] border shadow-md flex justify-center items-center">
-        <Bar data={userExpence} options={{}} className=" w-full p-6" />
-      </div>
-      <div className="md:w-[60rem] w-full h-[25rem] m-auto pl-[3.8rem] border shadow-md flex justify-center items-center">
-        <Bar data={userCredit} options={{}} className=" w-full p-6" />
+    <div className=" mt-10 md:mt-5 ">
+      <div className="pl-[3.8rem] p-2 flex flex-col gap-8 md:gap-5">
+        <div className="md:w-[60rem] w-full h-[25rem] m-auto  border shadow-md flex justify-center items-center">
+          <Line data={userExpence} options={{}} className=" w-full p-6" />
+        </div>
+        <div className="md:w-[60rem] w-full h-[25rem] m-auto pl-[3.8rem] border shadow-md flex justify-center items-center">
+          <Line data={userCredit} options={{}} className=" w-full p-6" />
+        </div>
       </div>
     </div>
   );

@@ -3,9 +3,13 @@ import { BiSolidUserCircle } from "react-icons/bi";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { CSVLink } from "react-csv";
+
 const ProfileView = () => {
   const userProfile = useSelector((state) => state.userProfile.userInfo);
-  const [isVip, setIsVip] = useState(false);
+  const userExpences = useSelector((state) => state.expences.expences);
+  console.log(userExpences);
+  const [isVip, setIsVip] = useState(true);
 
   const verifyEmailHandeler = async () => {
     const idToken = localStorage.getItem("idToken");
@@ -19,6 +23,16 @@ const ProfileView = () => {
       toast.error(error.response.data.error.message);
     }
   };
+
+  // for csv format download
+  const headers = [
+    { label: "Is It Expence", key: "isExpence" },
+    { label: "Expence Name", key: "expenceName" },
+    { label: "Expence Date", key: "expenceDate" },
+    { label: "Expence Day", key: "expenceDay" },
+    { label: "Expence Time", key: "expenceTime" },
+    { label: "Expence Price", key: "expencePrice" },
+  ];
 
   return (
     <div className=" pl-[3.4rem]">
@@ -77,9 +91,11 @@ const ProfileView = () => {
                 : "Verify your account to use 100% of our app"}
             </h1>
             {isVip ? (
-              <button className=" mt-2 font-bold bg-[#469170] px-4 py-2 rounded-sm text-white">
-                Download Expences
-              </button>
+              <div className=" mt-2 font-bold bg-[#469170] px-4 py-2 rounded-sm text-white">
+                <CSVLink data={userExpences} headers={headers}>
+                  Download Expences
+                </CSVLink>
+              </div>
             ) : (
               <button className=" mt-2 font-bold ">Unlock VIP</button>
             )}
