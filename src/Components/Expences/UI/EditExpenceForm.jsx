@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEditedExpence } from "../../../store/actions/expencesAction";
 import Loader from "../../UI/Loader/Loader";
 import formatEmail from "../../../Functions/formatEmail";
+import Option from "./Option";
 
 const EditExpenceForm = (props) => {
   // geting the edited expence values from store
   const { editedExpences, expences } = useSelector((state) => state.expences);
   const { userEmail } = useSelector((state) => state.auth);
-  console.log(userEmail);
+  const { categorys } = useSelector((state) => state.categorys);
 
   // setting those values as an intial value
   const [expenceName, setExpenceName] = useState(editedExpences.expenceName);
@@ -226,9 +227,9 @@ const EditExpenceForm = (props) => {
                 onChange={(e) => setCatagory(e.target.value)}
               >
                 <option value="Not Selected">Not Selected</option>
-                <option value="Fuel">Fuel</option>
-                <option value="Movie">Movie</option>
-                <option value="Dinner">Dinner</option>
+                {categorys.map((val) => {
+                  return <Option option={val.category} key={val.id} />;
+                })}
               </select>
               <input
                 type="number"

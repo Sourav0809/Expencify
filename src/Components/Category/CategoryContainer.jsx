@@ -1,46 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Category from "./UI/Category";
 import { useDispatch, useSelector } from "react-redux";
 import { categoryAction } from "../../store/actions/categoryAction";
 
 const CategoryContainer = () => {
   const { categorys } = useSelector((state) => state.categorys);
-  console.log(categorys);
   const [category, setCategory] = useState("");
   const dispatch = useDispatch();
 
   const submitCategory = () => {
-    const submitedCategory = {
+    const submittedCategory = {
       category: category,
       id: Math.random(),
     };
-    dispatch(categoryAction(submitedCategory));
+    dispatch(categoryAction(submittedCategory));
   };
 
   return (
-    <div className=" mt-2 md:w-[50rem] w-full  m-auto pl-[5rem] ">
-      <div className="mt-5 flex flex-col p-10">
-        <h1 className=" text-4xl font-popins font-bold text-blue-950">
-          Categorys
+    <div className=" md:w-[50rem] w-full m-auto p-5">
+      <div className=" flex flex-col gap-4 justify-center p-10">
+        <h1 className="text-4xl font-popins font-bold text-blue-950">
+          Categories
         </h1>
-        <h1 className=" text-2xl mt-5 font-bold">Your Categorys</h1>
+        <h1 className="text-2xl mt-5 font-bold">Your Categories</h1>
 
-        <div className=" mt-7 flex flex-col gap-2">
-          {categorys.map((val) => {
-            return (
-              <Category category={val.category} key={val.id} id={val.id} />
-            );
-          })}
+        <div className=" flex flex-col gap-2">
+          {categorys.length === 0 && (
+            <p className="text-center">No Categorys Added</p>
+          )}
+          {categorys.map((val) => (
+            <Category category={val.category} key={val.id} id={val.id} />
+          ))}
         </div>
-
-        <div className=" flex w-full gap-1 mt-8">
+        <div className="flex w-full gap-1 mt-2 pt-2">
           <input
             placeholder="Add New Category"
-            className="w-[80%] p-2 focus border border-black "
+            className="w-[80%] p-2 focus border border-black"
             onChange={(e) => setCategory(e.target.value)}
           />
           <button
-            className=" w-[20%] bg-blue-400 rounded-sm text-white font-semibold"
+            className="w-[18%] bg-blue-400 rounded-md text-white font-semibold"
             onClick={submitCategory}
           >
             Add Now

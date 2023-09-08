@@ -116,7 +116,6 @@ const AddExpenceForm = (props) => {
                 <option value="Not Selected">Not Selected</option>
 
                 {categorys.map((val) => {
-                  console.log(val);
                   return <Option option={val.category} key={val.id} />;
                 })}
               </select>
