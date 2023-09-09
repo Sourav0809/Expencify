@@ -8,11 +8,15 @@ import { useDispatch } from "react-redux";
 import { authAction, setUserEmail } from "../store/actions/authAction";
 import ToggleButton from "../Components/UI/Button/ToggleButton";
 import { getExpence } from "../store/actions/expencesAction";
+import { fetchCatagory } from "../store/actions/categoryAction";
+
 const App = () => {
   const { userInfo } = useSelector((state) => state.userProfile);
+  const { userEmail } = useSelector((state) => state.auth);
   const [loaderScreen, setLoaderScreen] = useState(true);
   const dispatch = useDispatch();
 
+  // useffect for user validation
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
 
@@ -32,15 +36,23 @@ const App = () => {
           console.log(error);
         }
       }
-      // fetching user expences
-      dispatch(getExpence());
-
       setLoaderScreen(false);
     };
 
     // calling the above function to validate the user
     validateUser(idToken);
   }, []);
+
+  // useffect for fetching user expences and catagorys
+  useEffect(() => {
+    if (userEmail) {
+      // fetching user expences
+      dispatch(getExpence());
+      // fetching user catagory
+
+      dispatch(fetchCatagory());
+    }
+  }, [userEmail]);
 
   return (
     <>

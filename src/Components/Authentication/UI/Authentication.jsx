@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../../../store/actions/authAction";
 import { toast } from "react-toastify";
 import Loader from "../../UI/Loader/Loader";
@@ -13,6 +13,7 @@ const Authentication = () => {
   const [userPwd, setUserPwd] = useState("");
   const [loaderScreen, setLoaderScreen] = useState(false);
   const [onForgotPwd, setOnForgotPwd] = useState(false);
+  const { darkMode } = useSelector((state) => state.darkMode);
   const navigate = useNavigate();
   const dispacth = useDispatch();
   /* -------------------------------------------------------------------------- */
@@ -151,7 +152,9 @@ const Authentication = () => {
             <input
               type="email"
               placeholder="Enter Your E-mail..."
-              className=" bg-[#e0e0e0] p-2 rounded-md"
+              className={`bg-[#e0e0e0] p-2 rounded-md ${
+                darkMode && "text-black"
+              } `}
               onChange={userEmailHandeler}
               value={userEmail}
               required
@@ -164,7 +167,9 @@ const Authentication = () => {
               <input
                 type="password"
                 placeholder="Enter Your Password..."
-                className=" bg-[#e0e0e0] p-2 rounded-md"
+                className={`bg-[#e0e0e0] p-2 rounded-md ${
+                  darkMode && "text-black"
+                }`}
                 onChange={userPwdHandeler}
                 value={userPwd}
                 required

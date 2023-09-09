@@ -13,6 +13,7 @@ import Option from "./Option";
 const EditExpenceForm = (props) => {
   // geting the edited expence values from store
   const { editedExpences, expences } = useSelector((state) => state.expences);
+  const { darkMode } = useSelector((state) => state.darkMode);
   const { userEmail } = useSelector((state) => state.auth);
   const { categorys } = useSelector((state) => state.categorys);
 
@@ -177,7 +178,11 @@ const EditExpenceForm = (props) => {
 
   return (
     <Modal>
-      <div className="  bg-blue-200 rounded-lg shadow-md w-[25rem] h-[27rem]">
+      <div
+        className={`bg-blue-200 rounded-lg shadow-md w-[25rem] h-[27rem] ${
+          darkMode && "text-black bg-blue-400 shadow-slate-400"
+        } `}
+      >
         <div className=" flex justify-end items-end">
           <div
             className="bg-gray-500 inline-block p-3 rounded-tr-md rounded-bl-md cursor-pointer "
@@ -199,22 +204,22 @@ const EditExpenceForm = (props) => {
               <input
                 type="text"
                 placeholder="Expence Name"
-                className=" p-[.4rem] "
+                className={`p-[.4rem] ${darkMode && "text-black"}`}
                 onChange={(e) => {
                   setExpenceName(e.target.value);
                 }}
                 value={expenceName}
               />
-              <div className=" flex gap-2">
+              <div className=" flex gap-2}">
                 <input
                   type="date"
-                  className=" w-1/2 p-1 "
+                  className={`w-1/2 p-1 ${darkMode && "text-black"}`}
                   onChange={(e) => setExpenceDate(e.target.value)}
                   value={expenceDate}
                 />
                 <input
                   type="time"
-                  className=" w-1/2  p-1 flex"
+                  className={`w-1/2  p-1 flex ${darkMode && "text-black"}`}
                   onChange={(e) => setExpenceTime(e.target.value)}
                   value={expenceTime}
                 />
@@ -222,7 +227,7 @@ const EditExpenceForm = (props) => {
               <select
                 id="category"
                 name="category"
-                className=" p-[.4rem]"
+                className={`p-[.4rem] ${darkMode && "text-black"}`}
                 defaultValue={catagory}
                 onChange={(e) => setCatagory(e.target.value)}
               >
@@ -234,7 +239,7 @@ const EditExpenceForm = (props) => {
               <input
                 type="number"
                 placeholder="Expence Price"
-                className=" p-[.4rem]"
+                className={`p-[.4rem] ${darkMode && "text-black"}`}
                 onChange={(e) => setExpencePrice(e.target.value)}
                 value={expencePrice}
               />

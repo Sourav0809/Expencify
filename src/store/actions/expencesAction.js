@@ -44,7 +44,6 @@ export const getExpence = () => {
 
         try {
             if (userEmail) {
-
                 const { data } = await axios.get(`https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(userEmail)}/Expences.json`)
 
                 if (data) {

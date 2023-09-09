@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Category from "./UI/Category";
 import { useDispatch, useSelector } from "react-redux";
-import { setCatagory, fetchCatagory } from "../../store/actions/categoryAction";
+import { setCatagory } from "../../store/actions/categoryAction";
 import PageLoader from "../UI/Loader/PageLoader";
 
 const CategoryContainer = () => {
@@ -11,11 +11,6 @@ const CategoryContainer = () => {
   const [inputCatagory, setInputCatagory] = useState("");
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    // calling the fetch category action if user refresh the page
-    dispatch(fetchCatagory());
-  }, []);
 
   // when user submit the category
 

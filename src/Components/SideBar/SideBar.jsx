@@ -8,11 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../../store/actions/authAction";
 import { userProfileAction } from "../../store/actions/userProfileAction";
 import { NavLink } from "react-router-dom";
+import categorySlice from "../../store/reducers/CategorySlice";
 
 const SideBar = () => {
   const dispatchLogOut = useDispatch();
   const clearUserEmail = useDispatch();
   const clearUserInfo = useDispatch();
+  const clearCatagorys = useDispatch();
   const { darkMode } = useSelector((state) => state.darkMode);
 
   const logOutHandler = () => {
@@ -21,6 +23,7 @@ const SideBar = () => {
     dispatchLogOut(authAction.userLogOut());
     clearUserInfo(userProfileAction.setUserInfo(""));
     clearUserEmail(authAction.setUserEmail(null));
+    clearCatagorys(categorySlice.actions.setCategory([]));
   };
 
   return (

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 const Expences = (props) => {
   const { darkMode } = useSelector((state) => state.darkMode);
+
   return (
     <div className=" flex flex-col ">
       <div className="flex gap-2">

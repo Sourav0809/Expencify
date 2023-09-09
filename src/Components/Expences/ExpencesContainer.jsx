@@ -5,17 +5,19 @@ import { useEffect, useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
 import PageLoader from "../UI/Loader/PageLoader";
 import EditExpenceForm from "./UI/EditExpenceForm";
-import { getExpence } from "../../store/actions/expencesAction";
 import { useDispatch, useSelector } from "react-redux";
 import { editExpence } from "../../store/actions/expencesAction";
-
+import searchExpences from "../../Functions/searchExpences";
+import expenceSlice from "../../store/reducers/expenceSlice";
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
   const { darkMode } = useSelector((state) => state.darkMode);
   const [viewEditExpence, setViewEditExpence] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const dispatch = useDispatch();
   const expenceList = useSelector((state) => state.expences.expences);
   const { loader } = useSelector((state) => state.expences);
+  const { userEmail } = useSelector((state) => state.auth);
 
   /* -------------------------------------------------------------------------- */
   /*                               On Expence Edit                              */
@@ -40,6 +42,19 @@ const ExpencesContainer = () => {
       calCredit += Number(val.expencePrice);
     }
   });
+
+  /* -------------------------------------------------------------------------- */
+  /*                   If user want to search his/her Expence                   */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    try {
+      searchExpences(userEmail, searchValue).then((val) => {
+        dispatch(expenceSlice.actions.setExpences(val));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [searchValue]);
 
   return (
     <>
@@ -81,6 +96,10 @@ const ExpencesContainer = () => {
                 type="text"
                 placeholder="Search.."
                 className=" bg-yellow-200 w-full  py-[0.2rem] border-none outline-none"
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
               />
             </div>
             <div className="w-[30%] md:w-[20%]">
@@ -109,9 +128,7 @@ const ExpencesContainer = () => {
           /* -------------------------------------------------------------------------- */}
           <div className=" flex flex-col gap-[0.5rem] ">
             {expenceList.length == 0 && (
-              <h1 className=" text-center mt-16 text-xl">
-                No Expences Added !!
-              </h1>
+              <h1 className=" text-center mt-16 text-xl">No Expences !!</h1>
             )}
             {expenceList.map((val) => {
               return (
@@ -131,7 +148,7 @@ const ExpencesContainer = () => {
             })}
           </div>
 
-          <div className=" fixed bottom-[10vh] right-[10vw]">
+          <div className=" fixed bottom-[15vh] right-[20vw]">
             <MdOutlineAddCircle
               className={` text-5xl text-red-400 cursor-pointer ${
                 darkMode && " text-white"
