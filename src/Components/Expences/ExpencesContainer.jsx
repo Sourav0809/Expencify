@@ -11,6 +11,7 @@ import { editExpence } from "../../store/actions/expencesAction";
 
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
+  const { darkMode } = useSelector((state) => state.darkMode);
   const [viewEditExpence, setViewEditExpence] = useState(false);
   const dispatch = useDispatch();
   const expenceList = useSelector((state) => state.expences.expences);
@@ -67,7 +68,11 @@ const ExpencesContainer = () => {
               Transactions
             </h1>
           </div>
-          <div className=" mt-2 flex justify-start items-center gap-1 ">
+          <div
+            className={`mt-2 flex justify-start items-center gap-1 ${
+              darkMode && "text-black"
+            } `}
+          >
             <div className="w-[65%] md:w-[80%] bg-yellow-200 flex justify-center items-center rounded-md">
               <div className=" flex justify-center items-center p-2">
                 <AiOutlineSearch />
@@ -128,7 +133,9 @@ const ExpencesContainer = () => {
 
           <div className=" fixed bottom-[10vh] right-[10vw]">
             <MdOutlineAddCircle
-              className=" text-5xl text-red-400 cursor-pointer"
+              className={` text-5xl text-red-400 cursor-pointer ${
+                darkMode && " text-white"
+              }`}
               onClick={() => setViewAddExpence(true)}
             />
           </div>

@@ -14,6 +14,7 @@ const AddExpenceForm = (props) => {
   const [catagory, setCatagory] = useState("Not Selected");
   const dispatch = useDispatch();
   const { categorys } = useSelector((state) => state.categorys);
+  const { darkMode } = useSelector((state) => state.darkMode);
 
   /* -------------------------------------------------------------------------- */
   /*                           On adding a new Expence                          */
@@ -66,7 +67,11 @@ const AddExpenceForm = (props) => {
 
   return (
     <Modal>
-      <div className="  bg-blue-200 rounded-lg shadow-md w-[25rem] h-[27rem]">
+      <div
+        className={`bg-blue-200 rounded-lg shadow-md w-[25rem] h-[27rem] ${
+          darkMode && "text-black bg-blue-400 shadow-slate-400"
+        } `}
+      >
         <div className=" flex justify-end items-end">
           <div
             className="bg-gray-500 inline-block p-3 rounded-tr-md rounded-bl-md cursor-pointer "

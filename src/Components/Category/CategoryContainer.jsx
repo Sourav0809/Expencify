@@ -6,7 +6,7 @@ import PageLoader from "../UI/Loader/PageLoader";
 
 const CategoryContainer = () => {
   const { categorys, loader } = useSelector((state) => state.categorys);
-
+  const { darkMode } = useSelector((state) => state.darkMode);
   // for the input
   const [inputCatagory, setInputCatagory] = useState("");
 
@@ -38,7 +38,11 @@ const CategoryContainer = () => {
       ) : (
         <div className=" md:w-[50rem] w-full m-auto pl-[3.5rem]">
           <div className=" flex flex-col gap-4 justify-center p-10 font-popin">
-            <h1 className="text-4xl s font-bold text-blue-950 h-3">
+            <h1
+              className={`text-4xl s font-bold text-blue-950 h-3 ${
+                darkMode && "text-white"
+              } `}
+            >
               Categories
             </h1>
 
@@ -57,7 +61,11 @@ const CategoryContainer = () => {
               </button>
             </div>
             <h1 className="text-2xl mt-5 font-bold">Your Categories</h1>
-            <div className=" flex flex-col gap-2 h-fit">
+            <div
+              className={` flex flex-col gap-2 h-fit ${
+                darkMode && "text-black"
+              }`}
+            >
               {categorys.length === 0 && (
                 <p className="text-center">No Categorys Added</p>
               )}

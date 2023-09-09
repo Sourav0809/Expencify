@@ -74,12 +74,12 @@ const DashBoard = () => {
   };
 
   return (
-    <div className=" mt-10 md:mt-5 ">
-      <div className="pl-[3.8rem] p-2 flex flex-col gap-8 md:gap-5">
-        <div className="md:w-[60rem] w-full h-[25rem] m-auto  border shadow-md flex justify-center items-center">
+    <div className=" mt-10 md:mt-5  ">
+      <div className="pl-[3.8rem] p-2 flex flex-col gap-8 md:gap-5 ">
+        <div className="md:w-[60rem] w-full bg-white h-[25rem] m-auto  border shadow-md flex justify-center items-center">
           <Line data={userExpence} options={{}} className=" w-full p-6" />
         </div>
-        <div className="md:w-[60rem] w-full h-[25rem] m-auto pl-[3.8rem] border shadow-md flex justify-center items-center">
+        <div className="md:w-[60rem] w-full bg-white h-[25rem] m-auto pl-[3.8rem] border shadow-md flex justify-center items-center">
           <Line data={userCredit} options={{}} className=" w-full p-6" />
         </div>
       </div>

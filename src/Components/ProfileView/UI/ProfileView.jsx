@@ -10,10 +10,9 @@ const ProfileView = () => {
   const userProfile = useSelector((state) => state.userProfile.userInfo);
   const userExpences = useSelector((state) => state.expences.expences);
   const { expences } = useSelector((state) => state.expences);
-  const dispatch = useDispatch();
+  const { darkMode } = useSelector((state) => state.darkMode);
   const { isVip } = useSelector((state) => state.vipUser);
-  console.log(isVip);
-  // console.log(userExpences);
+  const dispatch = useDispatch();
 
   // if the user refrest the page
 
@@ -62,15 +61,25 @@ const ProfileView = () => {
   return (
     <div className=" pl-[3.4rem]">
       <div className=" w-[95%] p-3  md:w-[45rem] border m-auto mt-20 text-center shadow-md">
-        <h2 className="text-4xl text-blue-950 font-popins font-bold mt-6">
+        <h2
+          className={`text-4xl text-blue-950 font-popins font-bold mt-6 ${
+            darkMode && "text-white"
+          }`}
+        >
           Your Account
         </h2>
 
         <div className=" flex justify-center item-center mt-2">
-          <BiSolidUserCircle className=" text-[8rem] text-blue-900" />
+          <BiSolidUserCircle
+            className={`text-[8rem] text-blue-900 ${darkMode && "text-white"} `}
+          />
         </div>
 
-        <div className=" w-full p-5 flex flex-col gap-2">
+        <div
+          className={`w-full p-5 flex flex-col gap-2 ${
+            darkMode && "text-black"
+          }`}
+        >
           <input
             disabled
             value={userProfile.displayName}
@@ -109,7 +118,7 @@ const ProfileView = () => {
             )}
           </div>
 
-          <div className=" mb-7">
+          <div className={` mb-7 ${darkMode ? "text-white" : "text-black"}`}>
             <h1 className=" text-base font-semibold">
               {userProfile.emailVerified
                 ? "Your Account is Verified"
