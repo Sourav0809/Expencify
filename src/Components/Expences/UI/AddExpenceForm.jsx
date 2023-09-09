@@ -5,7 +5,7 @@ import { ImCross } from "react-icons/im";
 import { setExpence } from "../../../store/actions/expencesAction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-
+import toast from "react-hot-toast";
 const AddExpenceForm = (props) => {
   const [expenceName, setExpenceName] = useState("");
   const [expencePrice, setExpencePrice] = useState("");
@@ -38,6 +38,7 @@ const AddExpenceForm = (props) => {
 
       dispatch(setExpence(expenceDetails));
       props.hideAddExpence();
+      toast.success("Expence Added");
     }
   };
 
@@ -62,6 +63,7 @@ const AddExpenceForm = (props) => {
       };
       dispatch(setExpence(expenceDetails));
       props.hideAddExpence();
+      toast.success("Credit Added");
     }
   };
 
