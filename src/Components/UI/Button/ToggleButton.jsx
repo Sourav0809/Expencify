@@ -1,7 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { darkModeAction } from "../../../store/actions/darkModeAction";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 function ToggleButton() {
   const [isToggled, setIsToggled] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isToggled === true) {
+      document.body.setAttribute("class", "bg-dark");
+      dispatch(darkModeAction.switchTodark());
+    } else {
+      document.body.setAttribute("class", "bg-normal");
+      dispatch(darkModeAction.switchToNormal());
+    }
+  }, [isToggled, dispatch]);
 
   const toggleButtonStyle = `w-14 h-7 bg-${
     isToggled ? "white" : "gray"
@@ -11,15 +25,7 @@ function ToggleButton() {
   }`;
 
   const handleToggle = () => {
-    setIsToggled(() => {
-      if (isToggled == false) {
-        document.body.setAttribute("class", "bg-dark");
-        return true;
-      } else {
-        document.body.setAttribute("class", "bg-normal");
-        return false;
-      }
-    });
+    setIsToggled((prevIsToggled) => !prevIsToggled);
   };
 
   return (
