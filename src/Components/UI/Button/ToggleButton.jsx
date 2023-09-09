@@ -17,11 +17,11 @@ function ToggleButton() {
     }
   }, [isToggled, dispatch]);
 
-  const toggleButtonStyle = `w-14 h-7 bg-${
-    isToggled ? "white" : "gray"
-  }-500 rounded-full p-1 flex items-center`;
-  const toggleCircleStyle = `w-6 h-6 bg-white rounded-full transform ${
-    isToggled ? "translate-x-8" : "translate-x-0"
+  const toggleButtonStyle = `w-14 h-7 ${
+    isToggled ? " bg-gray-100" : "bg-purple-700"
+  } rounded-full p-1 flex items-center`;
+  const toggleCircleStyle = `w-6 h-6 bg-yellow-400 rounded-full transform ${
+    isToggled ? "translate-x-6" : "translate-x-0"
   }`;
 
   const handleToggle = () => {
@@ -29,7 +29,7 @@ function ToggleButton() {
   };
 
   return (
-    <div className=" fixed top-2 right-10">
+    <div className=" fixed top-2 right-10  ">
       <button className={toggleButtonStyle} onClick={handleToggle}>
         <div className={toggleCircleStyle}></div>
       </button>
