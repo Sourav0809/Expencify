@@ -15,15 +15,17 @@ const CategoryContainer = () => {
   // when user submit the category
 
   const submitCategory = () => {
-    const submittedCategory = {
-      category: inputCatagory,
-      id: Math.random(),
-    };
+    if (submitCategory) {
+      const submittedCategory = {
+        category: inputCatagory,
+        id: Math.random(),
+      };
 
-    // storing the catagory in the database
-    dispatch(setCatagory(submittedCategory));
+      // storing the catagory in the database
+      dispatch(setCatagory(submittedCategory));
 
-    setInputCatagory("");
+      setInputCatagory("");
+    }
   };
 
   return (
