@@ -2,6 +2,8 @@ import categorySlice from "../reducers/categorySlice";
 import formatEmail from "../../Functions/formatEmail";
 import axios from "axios";
 import toast from "react-hot-toast";
+
+
 export const setCatagory = (newCategory) => {
     return async (dispatch, getState) => {
 

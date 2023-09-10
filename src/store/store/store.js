@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "../reducers/authSlice";
 import userProfileSlice from "../reducers/userProfileSlice";
 import expenceSlice from "../reducers/expenceSlice";
-import categorySlice from "../reducers/CategorySlice";
+import categorySlice from "../reducers/categorySlice";
 import vipUserSlice from "../reducers/vipUserSlice";
 import darkModeSlice from "../reducers/darkModeSlice";
 const store = configureStore({
