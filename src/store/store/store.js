@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "../reducers/authSlice";
-import userProfileSlice from "../reducers/UserProfileSlice";
+import userProfileSlice from "../reducers/userProfileSlice";
 import expenceSlice from "../reducers/expenceSlice";
 import categorySlice from "../reducers/CategorySlice";
 import vipUserSlice from "../reducers/vipUserSlice";
