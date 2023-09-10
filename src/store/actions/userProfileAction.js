@@ -1,4 +1,3 @@
-import userProfileSlice from "../reducers/UserProfileSlice";
-
+import userProfileSlice from "../reducers/userProfileSlice"
 
 export const userProfileAction = userProfileSlice.actions

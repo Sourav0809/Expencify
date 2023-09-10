@@ -3,7 +3,7 @@ import Modal from "../../UI/Modal/Modal";
 import { ImCross } from "react-icons/im";
 import { AiTwotoneDelete } from "react-icons/ai";
 import axios from "axios";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditedExpence } from "../../../store/actions/expencesAction";
 import Loader from "../../UI/Loader/Loader";
@@ -76,12 +76,14 @@ const EditExpenceForm = (props) => {
             return val;
           }
         );
-        console.log(editedExpenceArr);
+
         dispatch(setEditedExpence(editedExpenceArr));
+        toast.success("Transaction Edited");
         props.hideEditExpence();
       }
     } catch (error) {
-      console.log(error);
+      toast.error(" Error Occurred !");
+      setloaderScreen(false);
     }
     setloaderScreen(false);
   };
@@ -116,7 +118,6 @@ const EditExpenceForm = (props) => {
           )}/Expences/${editedExpences.firebaseId}.json`,
           updatedExpence
         );
-        console.log(updatedRes);
 
         // updating in ui
         const editedExpenceArr = JSON.parse(JSON.stringify(expences)).map(
@@ -137,10 +138,12 @@ const EditExpenceForm = (props) => {
           }
         );
         dispatch(setEditedExpence(editedExpenceArr));
+        toast.success("Transaction Edited");
         props.hideEditExpence();
       }
     } catch (error) {
-      console.log(error);
+      toast.error(" Error Occurred !");
+      setloaderScreen(false);
     }
     setloaderScreen(false);
   };
@@ -150,6 +153,7 @@ const EditExpenceForm = (props) => {
 
   const deleteExpenceHandeler = async (e) => {
     e.preventDefault();
+    setloaderScreen(true);
     try {
       const deletedRes = await axios.delete(
         `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
@@ -169,11 +173,14 @@ const EditExpenceForm = (props) => {
       });
 
       dispatch(setEditedExpence(sortedExpence));
-
+      toast.success("Transaction Deleted");
       props.hideEditExpence();
     } catch (error) {
-      toast.error(error.response.data.error.message);
+      toast.error(" Error Occurred !");
+      setloaderScreen(false);
     }
+
+    setloaderScreen(false);
   };
 
   return (

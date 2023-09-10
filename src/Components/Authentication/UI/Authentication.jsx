@@ -4,7 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../../../store/actions/authAction";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import Loader from "../../UI/Loader/Loader";
 
 const Authentication = () => {
@@ -109,8 +109,8 @@ const Authentication = () => {
         toast.success("Reset Link Sent On Your Email!");
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data.error.message);
+      setLoaderScreen(false);
     }
 
     setLoaderScreen(false);

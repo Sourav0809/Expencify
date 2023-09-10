@@ -44,7 +44,9 @@ const CategoryContainer = () => {
             <div className="flex w-full gap-1 mt-7 pt-2">
               <input
                 placeholder="Add New Category"
-                className="w-[70%] p-2  border border-black"
+                className={`w-[70%] p-2  border border-black ${
+                  darkMode && "text-black"
+                }`}
                 value={inputCatagory}
                 onChange={(e) => setInputCatagory(e.target.value)}
               />

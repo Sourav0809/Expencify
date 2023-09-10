@@ -2,7 +2,7 @@ import expenceSlice from "../reducers/expenceSlice"
 import axios from "axios"
 import formatEmail from "../../Functions/formatEmail"
 import authSlice from "../reducers/authSlice"
-
+import toast from "react-hot-toast";
 
 export const setExpence = (newExpence) => {
     return async (dispatch, getState) => {
@@ -25,10 +25,11 @@ export const setExpence = (newExpence) => {
                 });
 
                 dispatch(expenceSlice.actions.setExpences(finalSortarr))
-                console.log(data);
+                toast.success('Transaction Added')
             }
         } catch (error) {
-            console.log(error);
+            toast.error('Failed to add ');
+
         }
     }
 }
@@ -67,7 +68,7 @@ export const getExpence = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.error.message);
         }
         // setting the loader to false
         dispatch(expenceSlice.actions.setLoaderFalse())

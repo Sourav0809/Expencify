@@ -13,6 +13,7 @@ const searchExpences = async (userEmail, searchValue) => {
             );
 
             if (data) {
+
                 const expenceListArray = Object.keys(data).map((firebaseId) => ({
                     firebaseId,
                     ...data[firebaseId],

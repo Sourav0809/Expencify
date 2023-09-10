@@ -5,6 +5,7 @@ import PageLoader from "../../UI/Loader/PageLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfileAction } from "../../../store/actions/userProfileAction";
 import formatEmail from "../../../Functions/formatEmail";
+import toast from "react-hot-toast";
 const UserProfle = () => {
   const [loaderScreen, setLoaderScreen] = useState(true);
   // following state to manage user input
@@ -44,10 +45,11 @@ const UserProfle = () => {
             // storing the user details in the redux store
             if (data.users[0].displayName) {
               setUserDetails(userProfileAction.setUserInfo(userProfileDetails));
+              toast.success("User Profile Updated");
             }
           }
         } catch (error) {
-          console.log(error);
+          toast.error(" Error Occurred !");
         }
       }
       setLoaderScreen(false);
@@ -90,7 +92,7 @@ const UserProfle = () => {
 
       setUserDetails(userProfileAction.setUserInfo(submitedData));
     } catch (error) {
-      console.log(error);
+      toast.error(" Error Occurred !");
     }
     setLoaderScreen(false);
   };

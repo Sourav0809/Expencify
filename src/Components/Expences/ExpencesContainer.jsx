@@ -16,6 +16,7 @@ const ExpencesContainer = () => {
   const [searchValue, setSearchValue] = useState("");
   const dispatch = useDispatch();
   const expenceList = useSelector((state) => state.expences.expences);
+
   const { loader } = useSelector((state) => state.expences);
   const { userEmail } = useSelector((state) => state.auth);
 
@@ -49,7 +50,9 @@ const ExpencesContainer = () => {
   useEffect(() => {
     try {
       searchExpences(userEmail, searchValue).then((val) => {
-        dispatch(expenceSlice.actions.setExpences(val));
+        if (val) {
+          dispatch(expenceSlice.actions.setExpences(val));
+        }
       });
     } catch (error) {
       console.log(error);
@@ -127,7 +130,7 @@ const ExpencesContainer = () => {
           /*                         ADDED EXPENCES CONTAINER                            */
           /* -------------------------------------------------------------------------- */}
           <div className=" flex flex-col gap-[0.5rem] ">
-            {expenceList.length == 0 && (
+            {expenceList.length === 0 && (
               <h1 className=" text-center mt-16 text-xl">No Expences !!</h1>
             )}
             {expenceList.map((val) => {
@@ -148,9 +151,9 @@ const ExpencesContainer = () => {
             })}
           </div>
 
-          <div className=" fixed bottom-[15vh] right-[20vw]">
+          <div className=" fixed md:right-[20vw] right-[10vw] bottom-[20vh]">
             <MdOutlineAddCircle
-              className={` text-5xl text-red-400 cursor-pointer ${
+              className={` text-5xl text-red-400 fill-indigo-900 bg-white rounded-[50%] cursor-pointer ${
                 darkMode && " text-white"
               }`}
               onClick={() => setViewAddExpence(true)}

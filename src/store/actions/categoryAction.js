@@ -1,13 +1,11 @@
 import categorySlice from "../reducers/CategorySlice";
 import formatEmail from "../../Functions/formatEmail";
 import axios from "axios";
+import toast from "react-hot-toast";
 export const setCatagory = (newCategory) => {
     return async (dispatch, getState) => {
 
-
         const userEmail = getState().auth.userEmail
-
-
         try {
             if (userEmail) {
                 const { data } = await axios.post(`https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(userEmail)}/categorys/.json`
@@ -16,9 +14,10 @@ export const setCatagory = (newCategory) => {
                 const newExpenceObj = { firebaseId: data.name, ...newCategory };
 
                 dispatch(categorySlice.actions.setCategory([...getState().categorys.categorys, newExpenceObj]))
+                toast.success('Catagory Added')
             }
         } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.error.message);
         }
 
     }
@@ -45,7 +44,7 @@ export const fetchCatagory = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.error.message);
         }
         // making the loader false
         dispatch(categorySlice.actions.setLoaderFalse())
@@ -72,11 +71,12 @@ export const deleteCategory = (id) => {
                 })
 
                 dispatch(categorySlice.actions.deleteCategory(filteredCat))
+                toast.success('Catagory Deleted')
 
             }
 
         } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.error.message);
         }
 
 
