@@ -1,14 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Modal from "../../UI/Modal/Modal";
+import Option from "./Option";
 import { ImCross } from "react-icons/im";
-import expenceCtx from "../../../Context/ExpenceContext/ExpenceCtx";
+import { setExpence } from "../../../store/actions/expencesAction";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+
 const AddExpenceForm = (props) => {
   const [expenceName, setExpenceName] = useState("");
   const [expencePrice, setExpencePrice] = useState("");
   const [expenceDate, setExpenceDate] = useState("");
   const [expenceTime, setExpenceTime] = useState("");
   const [catagory, setCatagory] = useState("Not Selected");
-  const { onAddExpence } = useContext(expenceCtx);
+  const dispatch = useDispatch();
+  const { categorys } = useSelector((state) => state.categorys);
+  const { darkMode } = useSelector((state) => state.darkMode);
 
   /* -------------------------------------------------------------------------- */
   /*                           On adding a new Expence                          */
@@ -29,7 +35,8 @@ const AddExpenceForm = (props) => {
         }),
         catagory: catagory,
       };
-      onAddExpence(expenceDetails);
+
+      dispatch(setExpence(expenceDetails));
       props.hideAddExpence();
     }
   };
@@ -53,15 +60,18 @@ const AddExpenceForm = (props) => {
         }),
         catagory: catagory,
       };
-      onAddExpence(expenceDetails);
-      console.log(expenceDetails);
+      dispatch(setExpence(expenceDetails));
       props.hideAddExpence();
     }
   };
 
   return (
     <Modal>
-      <div className="  bg-blue-200 rounded-lg shadow-md w-[25rem] h-[27rem]">
+      <div
+        className={`bg-blue-200 rounded-lg shadow-md w-[25rem] h-[27rem] ${
+          darkMode && "text-black bg-blue-400 shadow-slate-400"
+        } `}
+      >
         <div className=" flex justify-end items-end">
           <div
             className="bg-gray-500 inline-block p-3 rounded-tr-md rounded-bl-md cursor-pointer "
@@ -109,9 +119,10 @@ const AddExpenceForm = (props) => {
                 onChange={(e) => setCatagory(e.target.value)}
               >
                 <option value="Not Selected">Not Selected</option>
-                <option value="Fuel">Fuel</option>
-                <option value="Movie">Movie</option>
-                <option value="Dinner">Dinner</option>
+
+                {categorys.map((val) => {
+                  return <Option option={val.category} key={val.id} />;
+                })}
               </select>
               <input
                 type="number"

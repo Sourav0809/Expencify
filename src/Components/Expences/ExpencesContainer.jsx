@@ -1,51 +1,33 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineAddCircle } from "react-icons/md";
 import Expences from "./UI/Expences";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
-import expenceCtx from "../../Context/ExpenceContext/ExpenceCtx";
-import axios from "axios";
 import PageLoader from "../UI/Loader/PageLoader";
 import EditExpenceForm from "./UI/EditExpenceForm";
+import { useDispatch, useSelector } from "react-redux";
+import { editExpence } from "../../store/actions/expencesAction";
+import searchExpences from "../../Functions/searchExpences";
+import expenceSlice from "../../store/reducers/expenceSlice";
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
-  const [loader, setLoader] = useState(true);
-  const { expenceList, setExpenceList, onEditExpence } = useContext(expenceCtx);
+  const { darkMode } = useSelector((state) => state.darkMode);
   const [viewEditExpence, setViewEditExpence] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const dispatch = useDispatch();
+  const expenceList = useSelector((state) => state.expences.expences);
 
-  /* -------------------------------------------------------------------------- */
-  /*                     On page Refresh                                        */
-  /* -------------------------------------------------------------------------- */
-
-  useEffect(() => {
-    const fetchExpences = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/Expences.json"
-        );
-        if (data) {
-          const expenceListArray = Object.keys(data).map((firebaseId) => ({
-            firebaseId,
-            ...data[firebaseId],
-          }));
-
-          setExpenceList(expenceListArray);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      setLoader(false);
-    };
-
-    fetchExpences();
-  }, []);
+  const { loader } = useSelector((state) => state.expences);
+  const { userEmail } = useSelector((state) => state.auth);
 
   /* -------------------------------------------------------------------------- */
   /*                               On Expence Edit                              */
   /* -------------------------------------------------------------------------- */
   const onExpenceEdit = (id) => {
-    onEditExpence(id);
-    setViewEditExpence(true);
+    if (id) {
+      setViewEditExpence(true);
+      dispatch(editExpence(id));
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -61,6 +43,24 @@ const ExpencesContainer = () => {
       calCredit += Number(val.expencePrice);
     }
   });
+
+  /* -------------------------------------------------------------------------- */
+  /*                   If user want to search his/her Expence                   */
+  /* -------------------------------------------------------------------------- */
+  useMemo(() => {
+    const fetchData = async () => {
+      try {
+        const val = await searchExpences(userEmail, searchValue);
+        if (val) {
+          dispatch(expenceSlice.actions.setExpences(val));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [searchValue]);
 
   return (
     <>
@@ -89,7 +89,11 @@ const ExpencesContainer = () => {
               Transactions
             </h1>
           </div>
-          <div className=" mt-2 flex justify-start items-center gap-1 ">
+          <div
+            className={`mt-2 flex justify-start items-center gap-1 ${
+              darkMode && "text-black"
+            } `}
+          >
             <div className="w-[65%] md:w-[80%] bg-yellow-200 flex justify-center items-center rounded-md">
               <div className=" flex justify-center items-center p-2">
                 <AiOutlineSearch />
@@ -98,6 +102,10 @@ const ExpencesContainer = () => {
                 type="text"
                 placeholder="Search.."
                 className=" bg-yellow-200 w-full  py-[0.2rem] border-none outline-none"
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
               />
             </div>
             <div className="w-[30%] md:w-[20%]">
@@ -111,7 +119,7 @@ const ExpencesContainer = () => {
           {/* -------------------------------------------------------------------------- */
           /*                            TOTAL PRICE CONTAINER                           */
           /* -------------------------------------------------------------------------- */}
-          <div className="   flex justify-between items-center font-semibold font-mono text-2xl p-5">
+          <div className=" flex  justify-between items-center font-semibold font-mono text-2xl p-5">
             <div className=" flex justify-center items-center">
               <h1>TOTAL</h1>
             </div>
@@ -125,6 +133,9 @@ const ExpencesContainer = () => {
           /*                         ADDED EXPENCES CONTAINER                            */
           /* -------------------------------------------------------------------------- */}
           <div className=" flex flex-col gap-[0.5rem] ">
+            {expenceList.length === 0 && (
+              <h1 className=" text-center mt-16 text-xl">No Expences !!</h1>
+            )}
             {expenceList.map((val) => {
               return (
                 <Expences
@@ -143,9 +154,11 @@ const ExpencesContainer = () => {
             })}
           </div>
 
-          <div className=" absolute bottom-[10vh] right-[10vw]">
+          <div className=" fixed md:right-[20vw] right-[10vw] bottom-[20vh]">
             <MdOutlineAddCircle
-              className=" text-5xl text-red-400 cursor-pointer"
+              className={` text-5xl text-red-400 fill-indigo-900 bg-white rounded-[50%] cursor-pointer ${
+                darkMode && " text-white"
+              }`}
               onClick={() => setViewAddExpence(true)}
             />
           </div>

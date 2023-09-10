@@ -1,4 +1,7 @@
+import { useSelector } from "react-redux";
 const Expences = (props) => {
+  const { darkMode } = useSelector((state) => state.darkMode);
+
   return (
     <div className=" flex flex-col ">
       <div className="flex gap-2">
@@ -10,8 +13,8 @@ const Expences = (props) => {
           props.onClick(props.id);
         }}
         className={`${
-          props.isExpence ? "bg-red-300" : "bg-[#c5f976]"
-        } px-4 py-2 rounded-md cursor-pointer`}
+          props.isExpence ? "bg-red-300" : "bg-[#c5f976] "
+        } px-4 py-2 rounded-md cursor-pointer ${darkMode && "text-black"}`}
       >
         <div className=" flex justify-between items-center text-lg font-bold font-popins">
           <h4>

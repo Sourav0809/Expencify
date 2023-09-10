@@ -1,20 +1,21 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import authContext from "../../../Context/AuthContext/authContext";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { authAction } from "../../../store/actions/authAction";
+import toast from "react-hot-toast";
 import Loader from "../../UI/Loader/Loader";
 
 const Authentication = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userPwd, setUserPwd] = useState("");
-  const navigate = useNavigate();
-  const authCtx = useContext(authContext);
   const [loaderScreen, setLoaderScreen] = useState(false);
   const [onForgotPwd, setOnForgotPwd] = useState(false);
-
+  const { darkMode } = useSelector((state) => state.darkMode);
+  const navigate = useNavigate();
+  const dispacth = useDispatch();
   /* -------------------------------------------------------------------------- */
   /*                           SWITCH LOGIN OR SIGN UP                          */
   /* -------------------------------------------------------------------------- */
@@ -47,6 +48,7 @@ const Authentication = () => {
       /* -------------------------------------------------------------------------- */
       /*                          FOR CREATING NEW ACCOUNT                          */
       /* -------------------------------------------------------------------------- */
+
       if (!loggedIn && !onForgotPwd) {
         setLoaderScreen(true);
         const { data } = await axios.post(
@@ -57,10 +59,12 @@ const Authentication = () => {
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
 
-        // also storing the token into context
-        authCtx.setIdToken(data.idToken);
-        authCtx.setUserLoggedIn(true);
+        // storing the token into redux store and set user is logged in / autheticated
+        dispacth(authAction.setIdToken(data.idToken));
+        dispacth(authAction.userAuthenticated());
+        dispacth(authAction.setUserEmail(data.email));
         toast.success("Account Created ! ");
+        // navigate to user profile tab where user update their details
         navigate("/userprofile");
       }
 
@@ -78,9 +82,10 @@ const Authentication = () => {
         // storing the token after user create an account
         localStorage.setItem("idToken", data.idToken);
 
-        // also storing the token into context
-        authCtx.setIdToken(data.idToken);
-        authCtx.setUserLoggedIn(true);
+        // storing the token into redux store and set user is logged in / autheticated
+        dispacth(authAction.setIdToken(data.idToken));
+        dispacth(authAction.userAuthenticated());
+        dispacth(authAction.setUserEmail(data.email));
         toast.success("User Logged In ! ");
         navigate("/");
       }
@@ -105,6 +110,7 @@ const Authentication = () => {
       }
     } catch (error) {
       toast.error(error.response.data.error.message);
+      setLoaderScreen(false);
     }
 
     setLoaderScreen(false);
@@ -146,7 +152,9 @@ const Authentication = () => {
             <input
               type="email"
               placeholder="Enter Your E-mail..."
-              className=" bg-[#e0e0e0] p-2 rounded-md"
+              className={`bg-[#e0e0e0] p-2 rounded-md ${
+                darkMode && "text-black"
+              } `}
               onChange={userEmailHandeler}
               value={userEmail}
               required
@@ -159,7 +167,9 @@ const Authentication = () => {
               <input
                 type="password"
                 placeholder="Enter Your Password..."
-                className=" bg-[#e0e0e0] p-2 rounded-md"
+                className={`bg-[#e0e0e0] p-2 rounded-md ${
+                  darkMode && "text-black"
+                }`}
                 onChange={userPwdHandeler}
                 value={userPwd}
                 required

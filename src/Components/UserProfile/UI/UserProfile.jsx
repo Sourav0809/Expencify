@@ -1,15 +1,18 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import userProfileCtx from "../../../Context/UserProfile/userProfileCtx";
 import PageLoader from "../../UI/Loader/PageLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { userProfileAction } from "../../../store/actions/userProfileAction";
+import formatEmail from "../../../Functions/formatEmail";
+import toast from "react-hot-toast";
 const UserProfle = () => {
-  const userCtx = useContext(userProfileCtx);
   const [loaderScreen, setLoaderScreen] = useState(true);
   // following state to manage user input
-
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
+  const setUserDetails = useDispatch();
+  const { userEmail } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
@@ -21,18 +24,31 @@ const UserProfle = () => {
             { idToken: idToken }
           );
 
-          // Also need update user Profile if user refresh the page
-          const userProfileDetails = {
-            idToken: data.users[0].localId,
-            displayName: data.users[0].displayName,
-            mobile: data.users[0].displayName,
-            emailVerified: data.users[0].emailVerified,
-          };
-          if (data.users[0].displayName) {
-            userCtx.setUserInfo(userProfileDetails);
+          // for getting the userdetails that store in the database
+          const getUserDetails = await axios.get(
+            `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
+              userEmail
+            )}/UserInfo.json`
+          );
+          if (getUserDetails.data) {
+            const userMobile = Object.values(getUserDetails.data)[0].mobile;
+
+            // Also need update user Profile if user refresh the page
+            const userProfileDetails = {
+              idToken: data.users[0].localId,
+              displayName: data.users[0].displayName,
+              mobile: userMobile,
+              email: userEmail,
+              emailVerified: data.users[0].emailVerified,
+            };
+
+            // storing the user details in the redux store
+            if (data.users[0].displayName) {
+              setUserDetails(userProfileAction.setUserInfo(userProfileDetails));
+            }
           }
         } catch (error) {
-          console.log(error);
+          toast.error(" Error Occurred !");
         }
       }
       setLoaderScreen(false);
@@ -55,6 +71,7 @@ const UserProfle = () => {
       idToken: idToken,
       displayName: name,
       mobile: mobileNumber,
+      email: userEmail,
       emailVerified: false,
     };
 
@@ -65,9 +82,17 @@ const UserProfle = () => {
         submitedData
       );
 
-      userCtx.setUserInfo(submitedData);
+      const storeUserInfo = await axios.post(
+        `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
+          userEmail
+        )}/UserInfo/.json`,
+        submitedData
+      );
+
+      setUserDetails(userProfileAction.setUserInfo(submitedData));
+      toast.success("User Profile Updated");
     } catch (error) {
-      console.log(error);
+      toast.error(" Error Occurred !");
     }
     setLoaderScreen(false);
   };

@@ -1,12 +1,27 @@
 import axios from "axios";
-import Button from "../../UI/Button/Button";
-import { useContext } from "react";
-import authContext from "../../../Context/AuthContext/authContext";
-import userProfileCtx from "../../../Context/UserProfile/userProfileCtx";
+import { BiSolidUserCircle } from "react-icons/bi";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setVip, fetchVip } from "../../../store/actions//vipUserAction";
+import { useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
+import PageLoader from "../../UI/Loader/PageLoader";
+
 const ProfileView = () => {
-  const authCtx = useContext(authContext);
-  const userCtx = useContext(userProfileCtx);
+  const userProfile = useSelector((state) => state.userProfile.userInfo);
+  const userExpences = useSelector((state) => state.expences.expences);
+  const { expences } = useSelector((state) => state.expences);
+  const { darkMode } = useSelector((state) => state.darkMode);
+  const { isVip } = useSelector((state) => state.vipUser);
+  const [loader, setloader] = useState(true);
+  const dispatch = useDispatch();
+  // if the user refrest the page
+
+  useEffect(() => {
+    dispatch(fetchVip());
+    setloader(false);
+  }, []);
+
   const verifyEmailHandeler = async () => {
     const idToken = localStorage.getItem("idToken");
     try {
@@ -20,27 +35,122 @@ const ProfileView = () => {
     }
   };
 
-  // if user want to log out
+  // seting the user to vip
+  const setUserToVip = () => {
+    let totalexpence = 0;
 
-  const logOutHandeler = () => {
-    localStorage.removeItem("idToken");
-    authCtx.setUserLoggedIn(false);
-    authCtx.setIdToken("");
-    userCtx.setUserInfo("");
+    expences.forEach((val) => {
+      totalexpence += Number(val.expencePrice);
+    });
+
+    if (totalexpence >= 10000) {
+      dispatch(setVip());
+    } else {
+      alert("Your Total Expence and Credit Must be 10000 or Above");
+    }
   };
 
+  // for csv format download
+  const headers = [
+    { label: "Is It Expence", key: "isExpence" },
+    { label: "Expence Name", key: "expenceName" },
+    { label: "Expence Date", key: "expenceDate" },
+    { label: "Expence Day", key: "expenceDay" },
+    { label: "Expence Time", key: "expenceTime" },
+    { label: "Expence Price", key: "expencePrice" },
+  ];
+
   return (
-    <div>
-      <div className=" mt-36 text-center text-5xl">Your Profile</div>;
-      <div className=" flex justify-center items-center gap-2">
-        <Button>
-          <span onClick={verifyEmailHandeler}>Verify Email</span>
-        </Button>
-        <Button>
-          <span onClick={logOutHandeler}>Log Out</span>
-        </Button>
-      </div>
-    </div>
+    <>
+      {loader ? (
+        PageLoader
+      ) : (
+        <div className=" pl-[3.4rem]">
+          <div className=" w-[95%] p-3  md:w-[45rem] border m-auto mt-20 text-center shadow-md">
+            <h2
+              className={`text-4xl text-blue-950 font-popins font-bold mt-6 ${
+                darkMode && "text-white"
+              }`}
+            >
+              Your Account
+            </h2>
+
+            <div className=" flex justify-center item-center mt-2">
+              <BiSolidUserCircle
+                className={`text-[8rem] text-blue-900 ${
+                  darkMode && "text-white"
+                } `}
+              />
+            </div>
+
+            <div
+              className={`w-full p-5 flex flex-col gap-2 ${
+                darkMode && "text-black"
+              }`}
+            >
+              <input
+                disabled
+                value={userProfile.displayName}
+                className="w-full p-2 rounded-sm bg-[#9bddc2]"
+              />
+              <input
+                disabled
+                value={userProfile.email}
+                className="w-full p-2 rounded-sm bg-[#9bddc2]"
+              />
+              <input
+                disabled
+                value={userProfile.mobile}
+                className="w-full p-2 rounded-sm bg-[#9bddc2]"
+              />
+              <input
+                disabled
+                value="**********"
+                className="w-full p-2 rounded-sm  bg-[#9bddc2]"
+              />
+              <div className=" flex justify-center item-center gap-2">
+                {userProfile.emailVerified ? (
+                  <button
+                    disabled
+                    className="mt-3 py-2 bg-[#565be9d0] md:w-[100%] w-full font-semibold text-white rounded-sm"
+                  >
+                    Verfied User
+                  </button>
+                ) : (
+                  <button
+                    onClick={verifyEmailHandeler}
+                    className="mt-3 py-2 bg-[#565be9d0] md:w-[100%] w-full font-semibold text-white rounded-sm"
+                  >
+                    Verfiy Email
+                  </button>
+                )}
+              </div>
+
+              <div
+                className={` mb-7 ${darkMode ? "text-white" : "text-black"}`}
+              >
+                <h1 className=" text-base font-semibold">
+                  {userProfile.emailVerified
+                    ? "Your Account is Verified"
+                    : "Verify your account to use 100% of our app"}
+                </h1>
+                {isVip ? (
+                  <div className=" mt-2 font-bold bg-[#469170] px-4 py-2 rounded-sm text-white">
+                    <CSVLink data={userExpences} headers={headers}>
+                      Download Expences
+                    </CSVLink>
+                  </div>
+                ) : (
+                  <button className=" mt-2 font-bold " onClick={setUserToVip}>
+                    Unlock VIP
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

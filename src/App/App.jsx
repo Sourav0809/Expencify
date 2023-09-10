@@ -1,15 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MyRoutes from "../Routes/MyRoutes";
 import axios from "axios";
-import authContext from "../Context/AuthContext/authContext";
 import PageLoader from "../Components/UI/Loader/PageLoader";
-import userProfileCtx from "../Context/UserProfile/userProfileCtx";
 import SideBar from "../Components/SideBar/SideBar";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux";
+import { authAction, setUserEmail } from "../store/actions/authAction";
+import ToggleButton from "../Components/UI/Button/ToggleButton";
+import { getExpence } from "../store/actions/expencesAction";
+import { fetchCatagory } from "../store/actions/categoryAction";
 
 const App = () => {
-  const authCtx = useContext(authContext);
-  const { userInfo } = useContext(userProfileCtx);
+  const { userInfo } = useSelector((state) => state.userProfile);
+  const { userEmail } = useSelector((state) => state.auth);
   const [loaderScreen, setLoaderScreen] = useState(true);
+  const dispatch = useDispatch();
+
+  // useffect for user validation
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
 
@@ -21,9 +28,10 @@ const App = () => {
             { idToken: idToken }
           );
 
-          // storing the token into context
-          authCtx.setIdToken(idToken);
-          authCtx.setUserLoggedIn(true);
+          // storing the token into redux store
+          dispatch(authAction.userAuthenticated());
+          dispatch(authAction.setIdToken(idToken));
+          dispatch(setUserEmail(data.users[0].email));
         } catch (error) {
           console.log(error);
         }
@@ -35,6 +43,17 @@ const App = () => {
     validateUser(idToken);
   }, []);
 
+  // useffect for fetching user expences and catagorys
+  useEffect(() => {
+    if (userEmail) {
+      // fetching user expences
+      dispatch(getExpence());
+      // fetching user catagory
+
+      dispatch(fetchCatagory());
+    }
+  }, [userEmail]);
+
   return (
     <>
       {loaderScreen ? (
@@ -43,12 +62,13 @@ const App = () => {
         <>
           {userInfo ? (
             <>
-              {}
+              <ToggleButton />
               <SideBar />
               <MyRoutes />
             </>
           ) : (
             <>
+              <ToggleButton />
               <MyRoutes />
             </>
           )}
@@ -59,5 +79,3 @@ const App = () => {
 };
 
 export default App;
-
-// hello just changes something
