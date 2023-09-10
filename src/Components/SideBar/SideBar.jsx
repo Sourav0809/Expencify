@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../../store/actions/authAction";
 import { userProfileAction } from "../../store/actions/userProfileAction";
 import { NavLink } from "react-router-dom";
-import categorySlice from "../../store/reducers/CategorySlice";
+import categorySlice from "../../store/reducers/categorySlice";
 
 const SideBar = () => {
   const dispatchLogOut = useDispatch();
