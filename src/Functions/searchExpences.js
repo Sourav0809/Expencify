@@ -29,7 +29,7 @@ const searchExpences = async (userEmail, searchValue) => {
                 const filteredArray = sortedExpence.filter((item) => {
                     return item.expenceName
                         .toLowerCase()
-                        .includes(searchValue.toLowerCase());
+                        .includes(searchValue.toLowerCase().trim());
                 });
 
                 return filteredArray;

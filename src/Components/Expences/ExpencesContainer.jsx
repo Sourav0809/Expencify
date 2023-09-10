@@ -1,7 +1,7 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineAddCircle } from "react-icons/md";
 import Expences from "./UI/Expences";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
 import PageLoader from "../UI/Loader/PageLoader";
 import EditExpenceForm from "./UI/EditExpenceForm";
@@ -47,16 +47,19 @@ const ExpencesContainer = () => {
   /* -------------------------------------------------------------------------- */
   /*                   If user want to search his/her Expence                   */
   /* -------------------------------------------------------------------------- */
-  useEffect(() => {
-    try {
-      searchExpences(userEmail, searchValue).then((val) => {
+  useMemo(() => {
+    const fetchData = async () => {
+      try {
+        const val = await searchExpences(userEmail, searchValue);
         if (val) {
           dispatch(expenceSlice.actions.setExpences(val));
         }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, [searchValue]);
 
   return (
