@@ -3,7 +3,7 @@ import Category from "./UI/Category";
 import { useDispatch, useSelector } from "react-redux";
 import { setCatagory } from "../../store/actions/categoryAction";
 import PageLoader from "../UI/Loader/PageLoader";
-
+import toast from "react-hot-toast";
 const CategoryContainer = () => {
   const { categorys, loader } = useSelector((state) => state.categorys);
   const { darkMode } = useSelector((state) => state.darkMode);
@@ -25,6 +25,8 @@ const CategoryContainer = () => {
       dispatch(setCatagory(submittedCategory));
 
       setInputCatagory("");
+    } else {
+      toast.error("Field cannot be blank");
     }
   };
 
