@@ -1,7 +1,7 @@
 import axios from "axios";
 import vipUserSlice from "../reducers/vipUserSlice";
 import formatEmail from "../../Functions/formatEmail";
-
+import toast from "react-hot-toast";
 
 export const setVip = () => {
     return async (dispatch, getState) => {
@@ -11,9 +11,9 @@ export const setVip = () => {
                 { isVip: true })
 
             dispatch(vipUserSlice.actions.setVip())
-
+            toast.success('Vip Activated !')
         } catch (error) {
-            console.log(error);
+            toast.error("Error Occurred ! ")
         }
     }
 }
@@ -30,7 +30,7 @@ export const fetchVip = () => {
 
 
         } catch (error) {
-            console.log(error);
+            toast.error('Error in Fetch Your Data')
         }
     }
 }

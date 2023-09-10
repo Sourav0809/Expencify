@@ -45,7 +45,6 @@ const UserProfle = () => {
             // storing the user details in the redux store
             if (data.users[0].displayName) {
               setUserDetails(userProfileAction.setUserInfo(userProfileDetails));
-              toast.success("User Profile Updated");
             }
           }
         } catch (error) {
@@ -91,6 +90,7 @@ const UserProfle = () => {
       );
 
       setUserDetails(userProfileAction.setUserInfo(submitedData));
+      toast.success("User Profile Updated");
     } catch (error) {
       toast.error(" Error Occurred !");
     }
