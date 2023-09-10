@@ -15,7 +15,7 @@ const CategoryContainer = () => {
   // when user submit the category
 
   const submitCategory = () => {
-    if (submitCategory) {
+    if (inputCatagory) {
       const submittedCategory = {
         category: inputCatagory,
         id: Math.random(),
