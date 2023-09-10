@@ -15,6 +15,7 @@ const ProfileView = () => {
   const { isVip } = useSelector((state) => state.vipUser);
   const [loader, setloader] = useState(true);
   const dispatch = useDispatch();
+
   // if the user refrest the page
 
   useEffect(() => {
@@ -132,7 +133,7 @@ const ProfileView = () => {
                 <h1 className=" text-base font-semibold">
                   {userProfile.emailVerified
                     ? "Your Account is Verified"
-                    : "Verify your account to use 100% of our app"}
+                    : "Your Account is Not Verified !"}
                 </h1>
                 {isVip ? (
                   <div className=" mt-2 font-bold bg-[#469170] px-4 py-2 rounded-sm text-white">
