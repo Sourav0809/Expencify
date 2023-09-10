@@ -1,7 +1,7 @@
 import expenceSlice from "../reducers/expenceSlice"
 import axios from "axios"
 import formatEmail from "../../Functions/formatEmail"
-import authSlice from "../reducers/authSlice"
+
 import toast from "react-hot-toast";
 
 export const setExpence = (newExpence) => {
