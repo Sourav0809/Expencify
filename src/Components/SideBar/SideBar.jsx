@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../../store/actions/authAction";
 import { userProfileAction } from "../../store/actions/userProfileAction";
 import { NavLink } from "react-router-dom";
+import toast from "react-hot-toast";
 import categorySlice from "../../store/reducers/categorySlice";
 
 const SideBar = () => {
@@ -24,6 +25,7 @@ const SideBar = () => {
     clearUserInfo(userProfileAction.setUserInfo(""));
     clearUserEmail(authAction.setUserEmail(null));
     clearCatagorys(categorySlice.actions.setCategory([]));
+    toast.success("LogOut Succesfully ");
   };
 
   return (

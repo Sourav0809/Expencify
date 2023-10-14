@@ -1,43 +1,25 @@
-import formatEmail from "./formatEmail";
 
-import axios from "axios";
+const searchExpences = (searchValue, expenceListArray) => {
+    // for sorting the array
 
-const searchExpences = async (userEmail, searchValue) => {
+    const filteredArray = expenceListArray.filter((item) => {
 
-    try {
-        if (userEmail) {
-            const { data } = await axios.get(
-                `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
-                    userEmail
-                )}/Expences.json`
-            );
+        const searchVal = searchValue.toLowerCase().trim()
+        return item.expenceName
+            .toLowerCase()
+            .includes(searchVal) || item.expencePrice.includes(searchVal);
+    });
+    const sortedExpence = filteredArray.sort((a, b) => {
+        const dateA = new Date(a.expenceDate);
+        const dateB = new Date(b.expenceDate);
+        return dateB - dateA;
+    });
 
-            if (data) {
+    return sortedExpence;
 
-                const expenceListArray = Object.keys(data).map((firebaseId) => ({
-                    firebaseId,
-                    ...data[firebaseId],
-                }));
 
-                // for sorting the array
-                const sortedExpence = expenceListArray.sort((a, b) => {
-                    const dateA = new Date(a.expenceDate);
-                    const dateB = new Date(b.expenceDate);
-                    return dateB - dateA;
-                });
 
-                const filteredArray = sortedExpence.filter((item) => {
-                    return item.expenceName
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase().trim());
-                });
+}
 
-                return filteredArray;
-            }
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
 
 export default searchExpences

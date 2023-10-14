@@ -1,14 +1,14 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineAddCircle } from "react-icons/md";
 import Expences from "./UI/Expences";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import AddExpenceForm from "./UI/AddExpenceForm";
 import PageLoader from "../UI/Loader/PageLoader";
 import EditExpenceForm from "./UI/EditExpenceForm";
 import { useDispatch, useSelector } from "react-redux";
 import { editExpence } from "../../store/actions/expencesAction";
 import searchExpences from "../../Functions/searchExpences";
-import expenceSlice from "../../store/reducers/expenceSlice";
+
 const ExpencesContainer = () => {
   const [addExpence, setViewAddExpence] = useState(false);
   const { darkMode } = useSelector((state) => state.darkMode);
@@ -18,7 +18,6 @@ const ExpencesContainer = () => {
   const expenceList = useSelector((state) => state.expences.expences);
 
   const { loader } = useSelector((state) => state.expences);
-  const { userEmail } = useSelector((state) => state.auth);
 
   /* -------------------------------------------------------------------------- */
   /*                               On Expence Edit                              */
@@ -44,23 +43,9 @@ const ExpencesContainer = () => {
     }
   });
 
-  /* -------------------------------------------------------------------------- */
-  /*                   If user want to search his/her Expence                   */
-  /* -------------------------------------------------------------------------- */
-  useMemo(() => {
-    const fetchData = async () => {
-      try {
-        const val = await searchExpences(userEmail, searchValue);
-        if (val) {
-          dispatch(expenceSlice.actions.setExpences(val));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  // To reduce the newtwork call we can directly filtered
 
-    fetchData();
-  }, [searchValue]);
+  const filteredExpence = searchExpences(searchValue, expenceList);
 
   return (
     <>
@@ -80,7 +65,7 @@ const ExpencesContainer = () => {
         />
       )}
       <div className="  m-auto mt-5 w-[100%] px-6 pl-16 md:w-[50rem] md:px-0 md:pl-0  ">
-        <div className="p-3">
+        <div className="p-5">
           <div>
             <h1
               className=" font-mono
@@ -136,7 +121,7 @@ const ExpencesContainer = () => {
             {expenceList.length === 0 && (
               <h1 className=" text-center mt-16 text-xl">No Expences !!</h1>
             )}
-            {expenceList.map((val) => {
+            {filteredExpence.map((val) => {
               return (
                 <Expences
                   expenceName={val.expenceName}
