@@ -11,5 +11,5 @@ const userProfileSlice = createSlice({
 
 })
 
-
-export default userProfileSlice;
+export const { setUserInfo } = userProfileSlice.actions
+export default userProfileSlice

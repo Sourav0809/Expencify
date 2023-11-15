@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../../../store/actions/authAction";
+import { setUserEmailAction } from "../../../store/actions/authAction";
 import toast from "react-hot-toast";
 import Loader from "../../UI/Loader/Loader";
 
@@ -62,7 +63,7 @@ const Authentication = () => {
         // storing the token into redux store and set user is logged in / autheticated
         dispacth(authAction.setIdToken(data.idToken));
         dispacth(authAction.userAuthenticated());
-        dispacth(authAction.setUserEmail(data.email));
+        dispacth(setUserEmailAction(data.email));
         toast.success("Account Created ! ");
         // navigate to user profile tab where user update their details
         navigate("/userprofile");
@@ -85,7 +86,7 @@ const Authentication = () => {
         // storing the token into redux store and set user is logged in / autheticated
         dispacth(authAction.setIdToken(data.idToken));
         dispacth(authAction.userAuthenticated());
-        dispacth(authAction.setUserEmail(data.email));
+        dispacth(setUserEmailAction(data.email));
         toast.success("User Logged In ! ");
         navigate("/");
       }

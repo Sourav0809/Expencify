@@ -23,5 +23,6 @@ const expenceSlice = createSlice({
     }
 })
 
+export const { setExpences, getExpences, editExpence, setLoaderTrue, setLoaderFalse } = expenceSlice.actions
 
 export default expenceSlice

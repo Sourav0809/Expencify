@@ -13,4 +13,4 @@ const darkModeSlice = createSlice({
     }
 })
 
-export default darkModeSlice;
+export default darkModeSlice

@@ -75,6 +75,7 @@ const UserProfle = () => {
       emailVerified: false,
     };
 
+    console.log(submitedData);
     try {
       setLoaderScreen(true);
       const { data } = await axios.post(
@@ -82,6 +83,7 @@ const UserProfle = () => {
         submitedData
       );
 
+      console.log(userEmail);
       const storeUserInfo = await axios.post(
         `https://expencify-26abb-default-rtdb.asia-southeast1.firebasedatabase.app/${formatEmail(
           userEmail
@@ -93,6 +95,7 @@ const UserProfle = () => {
       toast.success("User Profile Updated");
     } catch (error) {
       toast.error(" Error Occurred !");
+      console.log(error); ///
     }
     setLoaderScreen(false);
   };

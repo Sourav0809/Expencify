@@ -9,6 +9,8 @@ const authSlice = createSlice({
         },
         userLogOut(state) {
             state.isAuthenticated = false
+            state.idToken = ""
+            state.userEmail = null
         },
 
         setIdToken(state, action) {
@@ -22,4 +24,5 @@ const authSlice = createSlice({
     }
 })
 
-export default authSlice;
+export const { userAuthenticated, userLogOut, setIdToken, setUserEmail } = authSlice.actions
+export default authSlice

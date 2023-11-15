@@ -22,4 +22,5 @@ const categorySlice = createSlice({
     }
 })
 
+export const { fetchCatagory, setCategory, deleteCategory, setLoaderTrue, setLoaderFalse } = categorySlice.actions
 export default categorySlice

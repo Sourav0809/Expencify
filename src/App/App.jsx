@@ -5,7 +5,8 @@ import PageLoader from "../Components/UI/Loader/PageLoader";
 import SideBar from "../Components/SideBar/SideBar";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
-import { authAction, setUserEmail } from "../store/actions/authAction";
+import { authAction } from "../store/actions/authAction";
+import { setUserEmailAction } from "../store/actions/authAction";
 import ToggleButton from "../Components/UI/Button/ToggleButton";
 import { getExpence } from "../store/actions/expencesAction";
 import { fetchCatagory } from "../store/actions/categoryAction";
@@ -31,7 +32,7 @@ const App = () => {
           // storing the token into redux store
           dispatch(authAction.userAuthenticated());
           dispatch(authAction.setIdToken(idToken));
-          dispatch(setUserEmail(data.users[0].email));
+          dispatch(setUserEmailAction(data.users[0].email));
         } catch (error) {
           console.log(error);
         }
@@ -56,6 +57,7 @@ const App = () => {
 
   return (
     <>
+      {console.log("line no 60 ")}
       {loaderScreen ? (
         PageLoader
       ) : (

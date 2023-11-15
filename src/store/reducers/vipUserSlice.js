@@ -14,5 +14,5 @@ const vipUserSlice = createSlice({
 })
 
 
-
+export const { setVip, fetchVip } = vipUserSlice.actions
 export default vipUserSlice

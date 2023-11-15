@@ -5,26 +5,16 @@ import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { AiOutlineLogout } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { authAction } from "../../store/actions/authAction";
-import { userProfileAction } from "../../store/actions/userProfileAction";
+import { userLogOutAction } from "../../store/actions/authAction";
 import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
-import categorySlice from "../../store/reducers/categorySlice";
 
 const SideBar = () => {
-  const dispatchLogOut = useDispatch();
-  const clearUserEmail = useDispatch();
-  const clearUserInfo = useDispatch();
-  const clearCatagorys = useDispatch();
+  const dispatch = useDispatch();
   const { darkMode } = useSelector((state) => state.darkMode);
 
   const logOutHandler = () => {
-    localStorage.removeItem("idToken");
-    dispatchLogOut(authAction.setIdToken(""));
-    dispatchLogOut(authAction.userLogOut());
-    clearUserInfo(userProfileAction.setUserInfo(""));
-    clearUserEmail(authAction.setUserEmail(null));
-    clearCatagorys(categorySlice.actions.setCategory([]));
+    dispatch(userLogOutAction());
     toast.success("LogOut Succesfully ");
   };
 
