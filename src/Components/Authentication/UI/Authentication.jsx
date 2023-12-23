@@ -88,7 +88,7 @@ const Authentication = () => {
         dispacth(authAction.userAuthenticated());
         dispacth(setUserEmailAction(data.email));
         toast.success("User Logged In ! ");
-        navigate("/");
+        navigate("/expenses");
       }
 
       /* -------------------------------------------------------------------------- */

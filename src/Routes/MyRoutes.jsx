@@ -17,7 +17,7 @@ const MyRoutes = () => {
         <>
           {userInfo ? (
             <>
-              <Route path="/" element={<ExpencePage />} />
+              <Route path="/expenses" element={<ExpencePage />} />
               <Route path="/dashboard" element={<DashBoard />} />
               <Route path="/categorys" element={<CategoryPage />} />
               <Route path="/profile" element={<ProfileViewPage />} />

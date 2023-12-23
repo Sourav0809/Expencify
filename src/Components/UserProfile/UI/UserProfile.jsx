@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userProfileAction } from "../../../store/actions/userProfileAction";
 import formatEmail from "../../../Functions/formatEmail";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const UserProfle = () => {
   const [loaderScreen, setLoaderScreen] = useState(true);
   // following state to manage user input
@@ -13,6 +14,7 @@ const UserProfle = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const setUserDetails = useDispatch();
   const { userEmail } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const idToken = localStorage.getItem("idToken");
@@ -45,6 +47,7 @@ const UserProfle = () => {
             // storing the user details in the redux store
             if (data.users[0].displayName) {
               setUserDetails(userProfileAction.setUserInfo(userProfileDetails));
+              navigate("/expenses");
             }
           }
         } catch (error) {
@@ -92,6 +95,7 @@ const UserProfle = () => {
       );
 
       setUserDetails(userProfileAction.setUserInfo(submitedData));
+      navigate("/expenses");
       toast.success("User Profile Updated");
     } catch (error) {
       toast.error(" Error Occurred !");

@@ -29,7 +29,7 @@ const SideBar = () => {
           darkMode ? " text-white" : "text-orange-600"
         } `}
       >
-        <NavLink to={"/"} className="cursor-pointer">
+        <NavLink to={"/expences"} className="cursor-pointer">
           <AiFillHome />
         </NavLink>
         <NavLink to={"/dashboard"} className="cursor-pointer">
