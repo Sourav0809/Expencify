@@ -127,7 +127,7 @@ const Authentication = () => {
           location.reload();
         }}
       >
-        expencyFi
+        expenciFy
       </h1>
       <div className=" m-auto  mt-28 lg:w-[70rem] w-full">
         <div className=" p-7 flex flex-col gap-3">
