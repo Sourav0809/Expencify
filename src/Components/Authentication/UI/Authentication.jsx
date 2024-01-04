@@ -1,4 +1,6 @@
 import axios from "axios";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../../firebase/config";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +34,27 @@ const Authentication = () => {
   };
   const userPwdHandeler = (e) => {
     setUserPwd(e.target.value);
+  };
+
+  /* -------------------------------------------------------------------------- */
+  /*                             SIGN IN WITH GOOGLE                            */
+  /* -------------------------------------------------------------------------- */
+
+  const signInwithGoogle = async () => {
+    try {
+      const { _tokenResponse } = await signInWithPopup(auth, provider);
+      // storing the token after user create an account
+      localStorage.setItem("idToken", _tokenResponse.idToken);
+      // storing the token into redux store and set user is logged in / autheticated
+      dispacth(authAction.setIdToken(_tokenResponse.idToken));
+      dispacth(authAction.userAuthenticated());
+      dispacth(setUserEmailAction(_tokenResponse.email));
+      toast.success("Account Created ! ");
+      // navigate to user profile tab where user update their details
+      navigate("/userprofile");
+    } catch (error) {
+      toast.error("Try Again !");
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -142,10 +165,13 @@ const Authentication = () => {
           </div>
 
           <div className=" mt-5">
-            <button className=" w-[100%] bg-[#e0e0e0] rounded-md p-1 text-black text-lg flex gap-1 justify-center items-center ">
+            <div
+              onClick={signInwithGoogle}
+              className=" w-[100%] bg-[#e0e0e0] rounded-md p-1 text-black text-lg flex gap-1 justify-center items-center "
+            >
               <h1 className=" text-base">Connect With</h1>
               <FcGoogle className=" text-4xl" />
-            </button>
+            </div>
           </div>
 
           <div className=" flex flex-col">
