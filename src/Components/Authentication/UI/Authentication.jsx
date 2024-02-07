@@ -53,6 +53,7 @@ const Authentication = () => {
       // navigate to user profile tab where user update their details
       navigate("/userprofile");
     } catch (error) {
+      console.log(error);
       toast.error("Try Again !");
     }
   };
