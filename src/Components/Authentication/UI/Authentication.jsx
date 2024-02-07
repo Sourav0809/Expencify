@@ -167,7 +167,7 @@ const Authentication = () => {
           <div className=" mt-5">
             <div
               onClick={signInwithGoogle}
-              className=" w-[100%] bg-[#e0e0e0] rounded-md p-1 text-black text-lg flex gap-1 justify-center items-center "
+              className=" w-[100%] bg-[#e0e0e0] rounded-md p-1 text-black text-lg flex gap-1 justify-center items-center cursor-pointer "
             >
               <h1 className=" text-base">Connect With</h1>
               <FcGoogle className=" text-4xl" />
